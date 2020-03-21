@@ -1,0 +1,54 @@
+{
+    "name": "andriichuk/laracash",
+    "description": "PHP Laravel Money Package",
+    "license": "MIT",
+    "keywords": [
+        "Laravel",
+        "Money",
+        "Laracash"
+    ],
+    "authors": [
+        {
+            "name": "Serhii Andriichuk",
+            "email": "andriichuk@gmail.com",
+            "homepage": "https://github.com/andriichuk",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5",
+        "ext-json": "*",
+        "ext-intl": "*",
+        "illuminate/contracts": "^7.2",
+        "illuminate/support": "^7.2",
+        "illuminate/config": "^7.2",
+        "moneyphp/money": "^3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "9.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Andriichuk\\Laracash\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Andriichuk\\Laracash\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0.1-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Andriichuk\\Laracash\\ServiceProvider"
+            ],
+            "aliases": {
+                "Laracash": "Andriichuk\\Laracash\\Facade\\Laracash"
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}
