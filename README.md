@@ -43,9 +43,10 @@ namespace App;
 
 use Andriichuk\Laracash\Casts\MoneyCast;
 use Andriichuk\Laracash\Model\HasCurrency;
+use Andriichuk\Laracash\Model\HasCurrencyInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Product extends Model implements HasCurrencyInterface
 {
     use HasCurrency;
 

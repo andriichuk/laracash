@@ -39,22 +39,8 @@ class LaracashServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(LaracashCompose::class, function () {
+        $this->app->bind('laracash', function () {
             return new LaracashCompose(new Config());
         });
-
-        $this->app->alias(LaracashCompose::class, 'laracash');
-    }
-
-    /**
-     * Facades Binding
-     */
-    private function facadeBindings()
-    {
-        $this->app->singleton(LaracashCompose::class, function () {
-            return new LaracashCompose(new Config());
-        });
-
-        $this->app->alias(LaracashCompose::class, 'laracash');
     }
 }

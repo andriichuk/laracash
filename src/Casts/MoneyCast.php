@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Andriichuk\Laracash\Casts;
 
+use Andriichuk\Laracash\Model\HasCurrencyInterface;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Andriichuk\Laracash\Facades\Laracash;
-use Andriichuk\Laracash\Model\HasCurrency;
 
 /**
  * Class MoneyCast
@@ -27,7 +27,7 @@ final class MoneyCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        $currency = $model instanceof HasCurrency
+        $currency = $model instanceof HasCurrencyInterface
             ? $attributes[$model->getCurrencyColumn()] ?? null
             : null;
 
