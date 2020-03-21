@@ -11,7 +11,7 @@ composer require andriichuk/laracash
 Publish vendor settings:
 
 ```shell script
-php artisan vendor:publish  --provider="\Andriichuk\Laracash\ServiceProviders\LaracashServiceProvider" --tag="config"
+php artisan vendor:publish --provider="\Andriichuk\Laracash\ServiceProviders\LaracashServiceProvider" --tag="config"
 ```
 
 ### Usage
