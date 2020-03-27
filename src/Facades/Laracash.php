@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Andriichuk\Laracash\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Andriichuk\Laracash\Creator;
+use Andriichuk\Laracash\Factory;
 use Andriichuk\Laracash\Formatter;
 use Andriichuk\Laracash\Parser;
 
 /**
  * Class Laracash
  *
- * @method static Creator creator()
+ * @method static Factory factory()
  * @method static Formatter formatter()
  * @method static Parser parser()
  *

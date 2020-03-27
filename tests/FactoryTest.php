@@ -6,28 +6,28 @@ namespace Andriichuk\Laracash\Tests;
 
 use InvalidArgumentException;
 use Andriichuk\Laracash\Config;
-use Andriichuk\Laracash\Creator;
+use Andriichuk\Laracash\Factory;
 use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * Class CreatorTest
+ * Class FactoryTest
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */
-final class CreatorTest extends TestCase
+final class FactoryTest extends TestCase
 {
     /**
-     * @var Creator
+     * @var Factory
      */
-    private $creator;
+    private $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->creator = new Creator(new Config());
+        $this->factory = new Factory(new Config());
     }
 
     /**
@@ -35,7 +35,7 @@ final class CreatorTest extends TestCase
      */
     public function testCreateFrom(array $input, array $expected): void
     {
-        $money = $this->creator->createFrom($input['amount'], $input['currency']);
+        $money = $this->factory->make($input['amount'], $input['currency']);
 
         $this->assertSame($money->getAmount(), $expected['amount']);
         $this->assertSame($money->getCurrency()->getCode(), $expected['currency']);
@@ -86,7 +86,7 @@ final class CreatorTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->creator->createFrom($amount, $currency);
+        $this->factory->make($amount, $currency);
     }
 
     public function exceptionDataProvider(): array

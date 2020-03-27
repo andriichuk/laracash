@@ -12,9 +12,9 @@ namespace Andriichuk\Laracash;
 final class LaracashCompose
 {
     /**
-     * @var Creator
+     * @var Factory
      */
-    private $creator;
+    private $factory;
 
     /**
      * @var Formatter
@@ -28,14 +28,14 @@ final class LaracashCompose
 
     public function __construct(Config $config)
     {
-        $this->creator = new Creator($config);
+        $this->factory = new Factory($config);
         $this->formatter = new Formatter($config);
         $this->parser = new Parser($config);
     }
 
-    public function creator(): Creator
+    public function factory(): Factory
     {
-        return $this->creator;
+        return $this->factory;
     }
 
     public function formatter(): Formatter

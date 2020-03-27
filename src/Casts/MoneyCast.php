@@ -7,6 +7,7 @@ namespace Andriichuk\Laracash\Casts;
 use Andriichuk\Laracash\Model\HasCurrencyInterface;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Andriichuk\Laracash\Facades\Laracash;
+use Money\Money;
 
 /**
  * Class MoneyCast
@@ -18,12 +19,12 @@ final class MoneyCast implements CastsAttributes
     /**
      * Cast the given value.
      *
-     * @param  \Illuminate\Contracts\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  mixed  $value
-     * @param  array  $attributes
+     * @param \Illuminate\Contracts\Database\Eloquent\Model $model
+     * @param string $key
+     * @param mixed $value
+     * @param array $attributes
      *
-     * @return array
+     * @return Money
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -31,21 +32,25 @@ final class MoneyCast implements CastsAttributes
             ? $attributes[$model->getCurrencyColumn()] ?? null
             : null;
 
-        return Laracash::creator()->createFrom($value, $currency);
+        return Laracash::factory()->make($value, $currency);
     }
 
     /**
      * Prepare the given value for storage.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  array  $value
-     * @param  array  $attributes
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $key
+     * @param array $value
+     * @param array $attributes
      *
      * @return string
      */
     public function set($model, $key, $value, $attributes)
     {
+        if ($value instanceof Money) {
+            return (string) $value->getAmount();
+        }
+
         return (string) $value;
     }
 }

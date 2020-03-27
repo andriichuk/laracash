@@ -9,11 +9,11 @@ use Money\Currency;
 use Money\Money;
 
 /**
- * Class Creator
+ * Class Factory
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */
-final class Creator
+final class Factory
 {
     /**
      * @var  Config
@@ -31,7 +31,7 @@ final class Creator
      *
      * @throws InvalidArgumentException
      */
-    public function createFrom($amount, $currency = null): Money
+    public function make($amount, $currency = null): Money
     {
         return new Money($amount, $this->resolveCurrency($currency));
     }
@@ -46,7 +46,7 @@ final class Creator
         if ($currency === null) {
             return new Currency($this->config->get('currency'));
         } elseif (is_string($currency) && trim($currency) !== '') {
-            return new Currency($currency);
+            return new Currency(mb_strtoupper($currency));
         } elseif ($currency instanceof Currency) {
             return $currency;
         }
