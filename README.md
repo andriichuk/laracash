@@ -147,3 +147,88 @@ $product = Product::find(1);
 
 $product->price = $product->price->add(Laracash::factory()->make(2000));
 ```
+
+API:
+
+Facade
+
+Factory:
+
+with default currency
+
+```php
+use \Andriichuk\Laracash\Facades\Laracash;
+
+Laracash::factory()->make(1000);
+Laracash::factory()->make('10000000000000');
+```
+
+Specify currency
+
+```php
+use \Andriichuk\Laracash\Facades\Laracash;
+use \Money\Currency;
+
+Laracash::factory()->make(1000, 'USD');
+Laracash::factory()->make(1000, new Currency('USD'));
+```
+
+```text
+Money\Money {#403 ▼
+  -amount: "1000"
+  -currency: Money\Currency {#404 ▼
+    -code: "USD"
+  }
+}
+```
+
+Formatter
+
+Decimal
+
+```php
+use \Andriichuk\Laracash\Facades\Laracash;
+use Money\Money;
+
+Laracash::formatter()->formatAsDecimal(Money::USD(100)); // "1.00"
+```
+
+Using intl extension
+
+```php
+use \Andriichuk\Laracash\Facades\Laracash;
+use Money\Money;
+
+Laracash::formatter()->formatAsIntlDecimal(Money::USD(100)); // "1"
+Laracash::formatter()->formatAsIntlDecimal(Money::USD(100), 'uk_UA'); // "1"
+```
+
+Intl currency
+
+```php
+use \Andriichuk\Laracash\Facades\Laracash;
+use Money\Money;
+
+Laracash::formatter()->formatAsIntlCurrency(Money::USD(100)); // "$1.00"
+Laracash::formatter()->formatAsIntlCurrency(Money::USD(100), 'uk_UA'); // "1,00 USD"
+```
+
+Custom formatter
+
+```php
+use \Andriichuk\Laracash\Facades\Laracash;
+use Money\Money;
+use NumberFormatter;
+
+Laracash::formatter()->formatIntlWithStyle(Money::USD(100), 'en_US', NumberFormatter::SPELLOUT); // "one"
+Laracash::formatter()->formatIntlWithStyle(Money::USD(100), 'en_US', NumberFormatter::SCIENTIFIC); // "1E0"
+```
+
+Bitcoin
+
+```php
+use \Andriichuk\Laracash\Facades\Laracash;
+use Money\Money;
+
+Laracash::formatter()->formatBitcoin(Money::XBT(1000000000)); // "Ƀ10.00"
+```
