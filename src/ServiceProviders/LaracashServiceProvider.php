@@ -16,13 +16,6 @@ use Andriichuk\Laracash\LaracashCompose;
 class LaracashServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * Boot the package.
      */
     public function boot()

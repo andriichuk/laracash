@@ -1,5 +1,7 @@
 ## PHP Laravel Money Package
 
+Laravel wrapper over [MoneyPHP](https://github.com/moneyphp/money) library
+
 ### Installation
 
 Require package
@@ -11,7 +13,7 @@ composer require andriichuk/laracash
 Publish vendor settings:
 
 ```shell script
-php artisan vendor:publish --provider="\Andriichuk\Laracash\ServiceProviders\LaracashServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Andriichuk\Laracash\ServiceProviders\LaracashServiceProvider" --tag="config"
 ```
 
 ### Usage
