@@ -14,8 +14,6 @@ use Illuminate\Config\Repository;
  */
 final class Config
 {
-    private const CONFIG_FILE_NAME = 'laracash';
-
     /**
      * @var Repository
      */
@@ -26,26 +24,43 @@ final class Config
      */
     public function __construct()
     {
-        $configPath = $this->configurationPath();
-
-        $configFile = $configPath . DIRECTORY_SEPARATOR . self::CONFIG_FILE_NAME . '.php';
-
-        if (!file_exists($configFile)) {
-            throw new Exception('Config file not found');
-        }
-
-        $this->config = new Repository(require $configFile);
+        $this->config = new Repository(require $this->configFile());
     }
 
-    private function configurationPath(): string
+    private function configFile()
     {
-        $configPath = __DIR__ . DIRECTORY_SEPARATOR . 'Config';
+        $appConfigFile = $this->appConfigFilePath();
 
-        if (function_exists('config_path')) {
-            $configPath = config_path();
+        if ($appConfigFile && file_exists($appConfigFile)) {
+            return $appConfigFile;
         }
 
-        return $configPath;
+        $packageConfigFile = $this->packageConfigFilePath();
+
+        if (file_exists($packageConfigFile)) {
+            return $packageConfigFile;
+        }
+
+        throw new Exception('Configuration file for Laracash package not found');
+    }
+
+    private function appConfigFilePath(): string
+    {
+        if (function_exists('config_path')) {
+            return config_path($this->fileName());
+        }
+
+        return '';
+    }
+
+    private function packageConfigFilePath(): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . $this->fileName();
+    }
+
+    private function fileName(): string
+    {
+        return 'laracash.php';
     }
 
     /**
