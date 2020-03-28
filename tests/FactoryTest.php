@@ -71,10 +71,6 @@ final class FactoryTest extends TestCase
                     'amount' => 500,
                     'currency' => null,
                 ],
-                [
-                    'amount' => '500',
-                    'currency' => 'USD',
-                ],
             ],
         ];
     }

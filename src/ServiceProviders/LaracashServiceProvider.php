@@ -6,7 +6,7 @@ namespace Andriichuk\Laracash\ServiceProviders;
 
 use Illuminate\Support\ServiceProvider;
 use Andriichuk\Laracash\Config;
-use Andriichuk\Laracash\LaracashCompose;
+use Andriichuk\Laracash\LaracashService;
 
 /**
  * Class LaracashServiceProvider
@@ -33,7 +33,7 @@ class LaracashServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('laracash', function () {
-            return new LaracashCompose(new Config());
+            return new LaracashService(new Config());
         });
     }
 }

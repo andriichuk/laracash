@@ -28,7 +28,7 @@ final class Config
     {
         $configPath = $this->configurationPath();
 
-        $configFile = $configPath . '/' . self::CONFIG_FILE_NAME . '.php';
+        $configFile = $configPath . DIRECTORY_SEPARATOR . self::CONFIG_FILE_NAME . '.php';
 
         if (!file_exists($configFile)) {
             throw new Exception('Config file not found');
@@ -39,7 +39,7 @@ final class Config
 
     private function configurationPath(): string
     {
-        $configPath = __DIR__ . '/Config';
+        $configPath = __DIR__ . DIRECTORY_SEPARATOR . 'Config';
 
         if (function_exists('config_path')) {
             $configPath = config_path();

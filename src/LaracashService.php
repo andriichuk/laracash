@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Andriichuk\Laracash;
 
 /**
- * Class LaracashCompose
+ * Class LaracashService
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */
-final class LaracashCompose
+final class LaracashService
 {
     /**
      * @var Factory

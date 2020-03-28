@@ -18,13 +18,15 @@
     "require": {
         "php": ">=7.2.5",
         "ext-json": "*",
-        "ext-intl": "*",
         "illuminate/contracts": "^7.2",
         "illuminate/support": "^7.2",
         "illuminate/config": "^7.2",
         "moneyphp/money": "^3.3"
     },
     "require-dev": {
+        "ext-bcmath": "*",
+        "ext-gmp": "*",
+        "ext-intl": "*",
         "phpunit/phpunit": "9.*"
     },
     "autoload": {
@@ -50,5 +52,6 @@
             }
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
