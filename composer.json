@@ -5,7 +5,8 @@
     "keywords": [
         "Laravel",
         "Money",
-        "Laracash"
+        "Laracash",
+        "ValueObject"
     ],
     "authors": [
         {
