@@ -6,7 +6,9 @@
 [![Total Downloads](https://poser.pugx.org/andriichuk/laracash/downloads?format=flat)](https://packagist.org/packages/andriichuk/laracash)
 [![License](https://poser.pugx.org/andriichuk/laracash/license?format=flat)](https://packagist.org/packages/andriichuk/laracash)
 
-Laravel wrapper over [MoneyPHP](https://github.com/moneyphp/money) library
+* Laravel wrapper over [MoneyPHP](https://github.com/moneyphp/money) library
+* Provides a convenient way to work with the money column as a Value Object
+* Uses the [Custom Casts](https://laravel.com/docs/7.x/eloquent-mutators#custom-casts) Laravel 7.x feature 
 
 ### Requirements
 
