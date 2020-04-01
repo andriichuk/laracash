@@ -105,6 +105,73 @@ class Product extends Model implements HasCurrencyInterface
 }
 ```
 
+### Get money from request
+
+```php
+
+use App\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+Route::post('products/{product}', function (Product $product, Request $request) {
+    $product->price = parseMoneyDecimal($request->get('price'));
+});
+```
+
+### Format in Eloquent API resources
+
+Define model resource
+
+```php
+use App\Product;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/**
+ * Class ProductResource
+ *
+ * @mixin Product
+ */
+final class ProductResource extends JsonResource
+{
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'price' => $this->price,
+            'price_as_currency' => formatMoneyAsCurrency($this->price),
+        ];
+    }
+}
+```
+
+Apply resource to the model
+
+```php
+use App\Product;
+use App\Http\Resources\ProductResource;
+
+Route::get('products/{product}', function (Product $product) {
+    return new ProductResource($product);
+});
+```
+
+Output
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "Product name",
+    "price": {
+      "amount": "1000",
+      "currency": "USD"
+    },
+    "price_as_currency": "$10.00"
+  }
+}
+```
+
 ### Model Creation
 
 Using scalar values (int|string)
@@ -178,6 +245,8 @@ $product->save();
 
 ### API
 
+#### Creation
+
 Money instance creation using `Laracash` facade.
 
 *If you do not pass the second argument `currency`, then it will take from `config` file
@@ -210,6 +279,8 @@ Money\Money {#403 ▼
 }
 ```
 
+#### Formatting
+
 Money instance formatting. [More info](http://moneyphp.org/en/stable/features/formatting.html)
 
 Decimal
@@ -219,6 +290,7 @@ use \Andriichuk\Laracash\Facades\Laracash;
 use Money\Money;
 
 Laracash::formatter()->formatAsDecimal(Money::USD(100)); // "1.00"
+formatMoneyAsDecimal(Money::USD(100)); // "1.00"
 ```
 
 Using `Intl` extension
@@ -239,6 +311,7 @@ use Money\Money;
 
 Laracash::formatter()->formatAsIntlCurrency(Money::USD(100)); // "$1.00"
 Laracash::formatter()->formatAsIntlCurrency(Money::USD(100), 'uk_UA'); // "1,00 USD"
+formatMoneyAsCurrency(Money::USD(100)); // "$1.00"
 ```
 
 Specify custom `Intl` formatting style
@@ -261,7 +334,9 @@ use Money\Money;
 Laracash::formatter()->formatBitcoin(Money::XBT(1000000000)); // "Ƀ10.00"
 ```
 
-Parsing. [More info](http://moneyphp.org/en/stable/features/parsing.html)
+#### Parsing
+ 
+[More info](http://moneyphp.org/en/stable/features/parsing.html)
 
 Intl parse money string with currency
 
@@ -289,6 +364,7 @@ Parse decimal
 use Andriichuk\Laracash\Facades\Laracash;
 
 Laracash::parser()->parseDecimal('1.30');
+parseMoneyDecimal('1.30');
 ```
 
 Result

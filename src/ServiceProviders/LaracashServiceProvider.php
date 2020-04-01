@@ -23,6 +23,13 @@ class LaracashServiceProvider extends ServiceProvider
         $this->publishes([
             dirname(__DIR__) . '/Config/laracash.php' => config_path('laracash.php'),
         ], 'config');
+
+        $this->registerHelpers();
+    }
+
+    private function registerHelpers(): void
+    {
+        require_once dirname(__DIR__) . '/Helpers/helpers.php';
     }
 
     /**
