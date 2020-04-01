@@ -78,11 +78,12 @@ final class Parser
         return new IntlLocalizedDecimalParser($numberFormatter, $this->isoCurrencies);
     }
 
-    public function parseDecimal(string $amount, string $forceCurrency = null): Money
+    public function parseDecimal(string $amount, string $currency = null): Money
     {
+        $currency = $currency ?: $this->config->get('currency');
         $moneyParser = new DecimalMoneyParser($this->isoCurrencies);
 
-        return $moneyParser->parse($amount, $forceCurrency);
+        return $moneyParser->parse($amount, $currency);
     }
 
     public function parseBitcoin(string $amount, int $fractionDigits = 2, string $forceCurrency = null): Money

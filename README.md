@@ -210,7 +210,7 @@ Money\Money {#403 ▼
 }
 ```
 
-Money instance formatting
+Money instance formatting. [More info](http://moneyphp.org/en/stable/features/formatting.html)
 
 Decimal
 
@@ -259,4 +259,45 @@ use \Andriichuk\Laracash\Facades\Laracash;
 use Money\Money;
 
 Laracash::formatter()->formatBitcoin(Money::XBT(1000000000)); // "Ƀ10.00"
+```
+
+Parsing. [More info](http://moneyphp.org/en/stable/features/parsing.html)
+
+Intl parse money string with currency
+
+```php
+use Andriichuk\Laracash\Facades\Laracash;
+
+Laracash::parser()->parseIntlCurrency('$1.00');
+
+```
+
+Result
+
+```text
+Money\Money {#369 ▼
+    -amount: "100"
+    -currency: Money\Currency {#368 ▼
+      -code: "USD"
+    }
+  }
+```
+
+Parse decimal
+
+```php
+use Andriichuk\Laracash\Facades\Laracash;
+
+Laracash::parser()->parseDecimal('1.30');
+```
+
+Result
+
+```text
+Money\Money {#368 ▼
+  -amount: "130"
+  -currency: Money\Currency {#367 ▼
+    -code: "USD"
+  }
+}
 ```
