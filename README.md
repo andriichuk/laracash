@@ -118,7 +118,7 @@ Route::post('products/{product}', function (Product $product, Request $request) 
 });
 ```
 
-### Format in Eloquent API resources
+### Serialization
 
 Define model resource
 
