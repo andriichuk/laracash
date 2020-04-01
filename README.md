@@ -114,7 +114,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('products/{product}', function (Product $product, Request $request) {
-    $product->price = parseMoneyDecimal($request->get('price'));
+    $product->price = parseMoneyDecimal($request->get('price')); // 55.99 => Money::USD(5599)
 });
 ```
 
