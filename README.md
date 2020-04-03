@@ -105,6 +105,23 @@ class Product extends Model implements HasCurrencyInterface
 }
 ```
 
+### Display money data in the form input field
+
+Assign model
+
+```php
+use App\Product;
+use Illuminate\Support\Facades\Route;
+
+Route::view('/', 'productForm', ['product' => Product::find(1)]);
+```
+
+Present money object as a decimal value
+
+```blade
+<input type="number" name="price" value="{{ formatMoneyAsDecimal($product->price) }}">
+```
+
 ### Get money from request
 
 ```php
