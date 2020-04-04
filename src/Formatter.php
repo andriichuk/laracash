@@ -80,4 +80,11 @@ final class Formatter
 
         return $formatter->format($money);
     }
+
+    public function formatBitcoinAsDecimal(Money $money): string
+    {
+        $moneyFormatter = new DecimalMoneyFormatter($this->bitcoinCurrencies);
+
+        return $moneyFormatter->format($money);
+    }
 }

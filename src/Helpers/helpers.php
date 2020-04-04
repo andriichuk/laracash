@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Andriichuk\Laracash\Facades\Laracash;
 use Money\Currency;
+use Money\Currencies\BitcoinCurrencies;
 use Money\Money;
 
 if (!function_exists('makeMoney')) {
@@ -32,6 +33,10 @@ if (!function_exists('makeBitcoin')) {
 if (!function_exists('formatMoneyAsCurrency')) {
     function formatMoneyAsCurrency(Money $money, string $locale = null): string
     {
+        if ($money->getCurrency()->getCode() === BitcoinCurrencies::CODE) {
+            return Laracash::formatter()->formatBitcoin($money);
+        }
+
         return Laracash::formatter()->formatAsIntlCurrency($money, $locale);
     }
 }
@@ -39,6 +44,10 @@ if (!function_exists('formatMoneyAsCurrency')) {
 if (!function_exists('formatMoneyAsDecimal')) {
     function formatMoneyAsDecimal(Money $money): string
     {
+        if ($money->getCurrency()->getCode() === BitcoinCurrencies::CODE) {
+            return Laracash::formatter()->formatBitcoinAsDecimal($money);
+        }
+
         return Laracash::formatter()->formatAsDecimal($money);
     }
 }

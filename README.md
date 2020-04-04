@@ -109,6 +109,53 @@ class Product extends Model implements HasCurrencyInterface
 }
 ```
 
+If you want to use magic accessors (`*_as_currency`, `*_as_decimal`) for money fields then you should add `HasMoney` trait to your Eloquent Model (accessors will be added automatically)
+
+```php
+<?php
+
+namespace App;
+
+use Andriichuk\Laracash\Casts\MoneyCast;
+use Andriichuk\Laracash\Model\HasMoney;
+use Illuminate\Database\Eloquent\Model;
+use Money\Money;
+
+/**
+ * Class Product
+ *
+ * @property Money $price
+ * @property-read string $price_as_currency
+ * @property-read string $price_as_decimal
+ */
+class Product extends Model
+{
+    use HasMoney;
+
+    protected $fillable = ['name', 'price'];
+
+    protected $casts = [
+        'price' => MoneyCast::class,
+    ];
+}
+```
+
+Now you can call magic fields
+
+```php
+use App\Product;
+
+$product = Product::find(1);
+
+$product->price_as_decimal; // "10.00"
+$product->price_as_currency; // "$10.00"
+
+$product->price = 5000;
+
+$product->price_as_decimal; // "50.00"
+$product->price_as_currency; // "$50.00"
+```
+
 ### Display money data in the form input field
 
 Assign model
@@ -124,6 +171,9 @@ Present money object as a decimal value
 
 ```blade
 <input type="number" name="price" value="{{ formatMoneyAsDecimal($product->price) }}">
+
+{{-- or with magic syntax --}}
+<input type="number" name="price" value="{{ $product->price_as_decimal }}">
 ```
 
 ### Get money from request
@@ -160,7 +210,7 @@ final class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
-            'price_as_currency' => formatMoneyAsCurrency($this->price),
+            'price_as_currency' => formatMoneyAsCurrency($this->price), // or $this->price_as_currency
         ];
     }
 }
@@ -360,6 +410,7 @@ use Money\Money;
 Laracash::formatter()->formatAsIntlCurrency(Money::USD(100)); // "$1.00"
 Laracash::formatter()->formatAsIntlCurrency(Money::USD(100), 'uk_UA'); // "1,00 USD"
 formatMoneyAsCurrency(Money::USD(100)); // "$1.00"
+formatMoneyAsCurrency(Money::XBT(1000000000)); // "Ƀ10.00"
 ```
 
 Specify custom `Intl` formatting style
@@ -380,6 +431,21 @@ use \Andriichuk\Laracash\Facades\Laracash;
 use Money\Money;
 
 Laracash::formatter()->formatBitcoin(Money::XBT(1000000000)); // "Ƀ10.00"
+
+// or use helper function
+formatMoneyAsCurrency(makeBitcoin(1000000000)); // "Ƀ10.00"
+```
+
+Bitcoin as decimal
+
+```php
+use \Andriichuk\Laracash\Facades\Laracash;
+use Money\Money;
+
+Laracash::formatter()->formatBitcoinAsDecimal(Money::XBT(1000000000)); // "10.00000000"
+
+// or use helper function
+formatMoneyAsDecimal(makeBitcoin(1000000000)); // "10.00000000"
 ```
 
 #### Parsing
