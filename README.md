@@ -237,7 +237,7 @@ Product::create([
 ]);
 ```
 
-Bitcoin creation:
+### Bitcoin creation:
 
 ```php
 use Andriichuk\Laracash\Facades\Laracash;
