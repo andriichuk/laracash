@@ -37,8 +37,8 @@ final class FactoryTest extends TestCase
     {
         $money = $this->factory->make($input['amount'], $input['currency']);
 
-        $this->assertSame($money->getAmount(), $expected['amount']);
-        $this->assertSame($money->getCurrency()->getCode(), $expected['currency']);
+        $this->assertSame($expected['amount'], $money->getAmount());
+        $this->assertSame($expected['currency'], $money->getCurrency()->getCode());
     }
 
     public function moneyProvider(): array
@@ -82,7 +82,7 @@ final class FactoryTest extends TestCase
     /**
      * @dataProvider exceptionDataProvider
      */
-    public function testThrowException($amount, $currency)
+    public function testThrowException($amount, $currency): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -96,5 +96,13 @@ final class FactoryTest extends TestCase
             'numeric currency' => [1, 100],
             'simple object currency' => [1, new stdClass()],
         ];
+    }
+
+    public function testBitcoinCreation(): void
+    {
+        $money = $this->factory->makeBitcoin('1000000000');
+
+        $this->assertSame('1000000000', $money->getAmount());
+        $this->assertSame('XBT', $money->getCurrency()->getCode());
     }
 }

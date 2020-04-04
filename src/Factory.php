@@ -37,6 +37,14 @@ final class Factory
     }
 
     /**
+     * @param int|string $amount
+     */
+    public function makeBitcoin($amount): Money
+    {
+        return Money::XBT($amount);
+    }
+
+    /**
      * @param string|Currency|null $currency
      *
      * @throws InvalidArgumentException

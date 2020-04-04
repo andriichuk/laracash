@@ -221,9 +221,36 @@ use Andriichuk\Laracash\Facades\Laracash;
 use App\Product;
 
 Product::create([
-    'name' => 'The Third Product',
+    'name' => 'The Fourth Product',
     'price' => Laracash::factory()->make(100)
 ]);
+```
+
+Using helper function:
+
+```php
+use App\Product;
+
+Product::create([
+    'name' => 'The Third Product',
+    'price' => makeMoney(100)
+]);
+```
+
+Bitcoin creation:
+
+```php
+use Andriichuk\Laracash\Facades\Laracash;
+use Money\Money;
+
+// Using Facade
+Laracash::factory()->makeBitcoin(1000000000);
+
+// Using helper
+makeBitcoin(1000000000);
+
+// Using native library factory call
+Money::XBT(1000000000);
 ```
 
 ### Retrieving data
