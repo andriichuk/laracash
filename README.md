@@ -275,7 +275,7 @@ use Andriichuk\Laracash\Facades\Laracash;
 use App\Product;
 
 Product::create([
-    'name' => 'The Fourth Product',
+    'name' => 'The Third Product',
     'price' => Laracash::factory()->make(100)
 ]);
 ```
@@ -286,7 +286,7 @@ Using helper function:
 use App\Product;
 
 Product::create([
-    'name' => 'The Third Product',
+    'name' => 'The Fourth Product',
     'price' => makeMoney(100)
 ]);
 ```
