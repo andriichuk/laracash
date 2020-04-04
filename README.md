@@ -37,8 +37,12 @@ php artisan vendor:publish --provider="Andriichuk\Laracash\ServiceProviders\Lara
 
 Default settings
 
-* `currency` - USD
-* `locale` - en_US
+```php
+[
+    'currency' => 'USD',
+    'locale' => 'en_US',
+];
+```
 
 ### Usage
 
