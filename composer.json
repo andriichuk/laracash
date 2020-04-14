@@ -46,7 +46,7 @@
         },
         "laravel": {
             "providers": [
-                "Andriichuk\\Laracash\\ServiceProvider"
+                "Andriichuk\\Laracash\\ServiceProviders\\LaracashServiceProvider"
             ],
             "aliases": {
                 "Laracash": "Andriichuk\\Laracash\\Facade\\Laracash"
