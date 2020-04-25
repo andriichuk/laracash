@@ -10,6 +10,10 @@
 * Provides a convenient way to work with the money column as a Value Object
 * Uses the [Custom Casts](https://laravel.com/docs/7.x/eloquent-mutators#custom-casts) Laravel 7.x feature 
 
+Features
+* Currency casts
+* Specify default currency per model
+
 ### Requirements
 
 * PHP >= 7.2.5

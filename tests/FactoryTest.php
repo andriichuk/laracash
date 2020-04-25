@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Andriichuk\Laracash\Tests;
 
+use Andriichuk\Laracash\CurrencyResolver;
 use InvalidArgumentException;
 use Andriichuk\Laracash\Config;
 use Andriichuk\Laracash\Factory;
@@ -27,7 +28,9 @@ final class FactoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->factory = new Factory(new Config());
+        $this->factory = new Factory(
+            new CurrencyResolver(new Config())
+        );
     }
 
     /**
@@ -84,7 +87,7 @@ final class FactoryTest extends TestCase
      */
     public function testThrowException($amount, $currency): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->factory->make($amount, $currency);
     }

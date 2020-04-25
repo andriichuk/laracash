@@ -12,6 +12,11 @@ namespace Andriichuk\Laracash;
 final class LaracashService
 {
     /**
+     * @var CurrencyResolver
+     */
+    private $currencyResolver;
+
+    /**
      * @var Factory
      */
     private $factory;
@@ -28,7 +33,8 @@ final class LaracashService
 
     public function __construct(Config $config)
     {
-        $this->factory = new Factory($config);
+        $this->currencyResolver = new CurrencyResolver($config);
+        $this->factory = new Factory($this->currencyResolver);
         $this->formatter = new Formatter($config);
         $this->parser = new Parser($config);
     }
@@ -46,5 +52,10 @@ final class LaracashService
     public function parser(): Parser
     {
         return $this->parser;
+    }
+
+    public function currency(): CurrencyResolver
+    {
+        return $this->currencyResolver;
     }
 }

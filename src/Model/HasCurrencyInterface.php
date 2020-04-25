@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Andriichuk\Laracash\Model;
 
+use Money\Currency;
+
 /**
  * Interface HasCurrencyInterface
  *
@@ -12,4 +14,8 @@ namespace Andriichuk\Laracash\Model;
 interface HasCurrencyInterface
 {
     public function getCurrencyColumn(): string;
+
+    public function isStrictCurrencyMode(): bool;
+
+    public function getDefaultCurrency(): Currency;
 }
