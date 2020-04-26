@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Andriichuk\Laracash;
+namespace Andriichuk\Laracash\Concerns;
 
 use InvalidArgumentException;
 use Money\Currency;

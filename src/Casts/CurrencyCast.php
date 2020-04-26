@@ -7,8 +7,8 @@ namespace Andriichuk\Laracash\Casts;
 use Andriichuk\Laracash\Model\HasCurrencyInterface;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Andriichuk\Laracash\Facades\Laracash;
+use Illuminate\Database\Eloquent\Model;
 use Money\Currency;
-use Money\Money;
 
 /**
  * Class CurrencyCast
@@ -29,17 +29,13 @@ final class CurrencyCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        $default = $model instanceof HasCurrencyInterface
-            ? $model->getDefaultCurrency()
-            : Laracash::currency()->default();
-
-        return Laracash::currency()->from($value ?? $default);
+        return $this->resolveCurrency($model, $key, $value);
     }
 
     /**
      * Prepare the given value for storage.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param Model $model
      * @param string $key
      * @param Currency|string $value
      * @param array $attributes
@@ -48,6 +44,18 @@ final class CurrencyCast implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        return Laracash::currency()->from($value)->getCode();
+        return $this->resolveCurrency($model, $key, $value)->getCode();
+    }
+
+    /**
+     * @param Currency|string $value
+     */
+    private function resolveCurrency(Model $model, string $key, $value): Currency
+    {
+        $default = $model instanceof HasCurrencyInterface
+            ? $model->getDefaultCurrencyFor($key)
+            : Laracash::currency()->default();
+
+        return Laracash::currency()->from($value ?? $default);
     }
 }

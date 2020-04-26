@@ -23,7 +23,7 @@ trait HasMoney
         $this->initializeAccessors();
     }
 
-    private function initializeAccessors(): void
+    protected function initializeAccessors(): void
     {
         foreach ($this->casts as $field => $cast) {
             if ($cast !== MoneyCast::class || $this->hasAccessor($field)) {
@@ -34,7 +34,7 @@ trait HasMoney
         }
     }
 
-    private function addAccessor(string $field): void
+    protected function addAccessor(string $field): void
     {
         $this->moneyCasts[$field . '_as_currency'] = function () use ($field) {
             return formatMoneyAsCurrency($this->{$field});
@@ -59,7 +59,7 @@ trait HasMoney
         return $this->moneyCasts[$key]();
     }
 
-    private function hasAccessor(string $field): bool
+    protected function hasAccessor(string $field): bool
     {
         return isset($this->moneyCasts[$field]);
     }

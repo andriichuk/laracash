@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Andriichuk\Laracash\Tests;
+namespace Andriichuk\Laracash\Tests\Unit\Concerns;
 
 use Andriichuk\Laracash\Config;
-use Andriichuk\Laracash\Parser;
+use Andriichuk\Laracash\Concerns\Parser;
+use Andriichuk\Laracash\Tests\BaseTestCase;
 use Money\Currency;
 use Money\Money;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class ParserTest
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */
-final class ParserTest extends TestCase
+final class ParserTest extends BaseTestCase
 {
     /**
      * @var Parser

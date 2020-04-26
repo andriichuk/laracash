@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Andriichuk\Laracash\Model;
 
-use \Money\Currency;
-
 /**
  * Interface HasMoneyWithCurrencyInterface
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */
-interface HasCurrencyInterface
+interface HasMoneyWithCurrencyInterface
 {
-    public function getDefaultCurrencyFor(string $field): Currency;
+    public function getCurrencyColumnFor(string $field): string;
 }

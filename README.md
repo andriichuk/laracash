@@ -10,9 +10,16 @@
 * Provides a convenient way to work with the money column as a Value Object
 * Uses the [Custom Casts](https://laravel.com/docs/7.x/eloquent-mutators#custom-casts) Laravel 7.x feature 
 
-Features
-* Currency casts
-* Specify default currency per model
+### Features
+
+* Convenient work with the native MoneyPHP library and Laravel Eloquent ORM
+* Money columns casting
+* Currencies columns casting
+* Supported concepts
+    * Money columns with default Currency (without a specific column)
+    * Currency columns without Money
+    * Many Money columns reference to one Currency column
+    * Money to Currencies columns mapping
 
 ### Requirements
 
@@ -48,9 +55,9 @@ Default settings
 ];
 ```
 
-### Usage
+### Usage Concepts
 
-Add Money cast to your Eloquent column
+#### Money columns with default Currency
 
 ```php
 <?php
@@ -62,55 +69,157 @@ use Illuminate\Database\Eloquent\Model;
 use Money\Money;
 
 /**
- * Class Product
+ * Class OrderItem
  *
  * @property Money $price
+ * @property Money $discount
  */
-class Product extends Model
+class OrderItem extends Model
 {
-    protected $fillable = ['name', 'price'];
+    protected $fillable = ['name', 'price', 'discount'];
 
     protected $casts = [
         'price' => MoneyCast::class,
+        'discount' => MoneyCast::class,
     ];
 }
 ```
 
-With currency column
+```php
+OrderItem::create([
+    'name' => 'Order Item',
+    'price' => makeMoney(1000),
+    'discount' => makeMoney(15),
+]);
+```
+
+#### Currency columns without Money
 
 ```php
 <?php
 
 namespace App;
 
-use Andriichuk\Laracash\Casts\MoneyCast;
+use Andriichuk\Laracash\Casts\CurrencyCast;
 use Andriichuk\Laracash\Model\HasCurrency;
 use Andriichuk\Laracash\Model\HasCurrencyInterface;
 use Illuminate\Database\Eloquent\Model;
+use Money\Currency;
+
+/**
+ * Class Rate
+ *
+ * @property Currency $currency
+ */
+class Rate extends Model implements HasCurrencyInterface
+{
+    use HasCurrency;
+
+    protected $fillable = ['name', 'price', 'currency', 'native_currency'];
+
+    protected $casts = [
+        'currency' => CurrencyCast::class,
+        'native_currency' => CurrencyCast::class,
+    ];
+}
+```
+
+```php
+Rate::create([
+    'name' => 'Rate #1', 
+    'price' => 99, 
+    'currency' => new Currency('USD'), 
+    'native_currency' => 'UAH',
+]);
+```
+
+### Many Money columns reference to one Currency column
+
+```php
+use Andriichuk\Laracash\Casts\CurrencyCast;
+use Andriichuk\Laracash\Casts\MoneyCast;
+use Andriichuk\Laracash\Model\HasCurrency;
+use Andriichuk\Laracash\Model\HasMoneyWithCurrency;
+use Andriichuk\Laracash\Model\HasMoneyWithCurrencyInterface;
+use Illuminate\Database\Eloquent\Model;
+use Money\Currency;
+use Money\Money;
+
+/**
+ * Class Transaction
+ *
+ * @property Money $payment_amount
+ * @property Money $discount
+ * @property Currency $currency
+ */
+class Transaction extends Model implements HasMoneyWithCurrencyInterface
+{
+    use HasMoneyWithCurrency;
+    use HasCurrency;
+
+    protected $fillable = ['name', 'payment_amount', 'discount', 'currency'];
+
+    protected $casts = [
+        'payment_amount' => MoneyCast::class,
+        'discount' => MoneyCast::class,
+        'currency' => CurrencyCast::class,
+    ];
+
+    public function getCurrencyColumnFor(string $field): string
+    {
+        return 'currency';
+    }
+}
+```
+
+#### Money to Currencies columns mapping
+
+```php
+use Andriichuk\Laracash\Casts\CurrencyCast;
+use Andriichuk\Laracash\Casts\MoneyCast;
+use Andriichuk\Laracash\Model\HasCurrency;use Andriichuk\Laracash\Model\HasMoneyWithCurrency;
+use Andriichuk\Laracash\Model\HasMoneyWithCurrencyInterface;
+use Illuminate\Database\Eloquent\Model;
+use Money\Currency;
 use Money\Money;
 
 /**
  * Class Product
  *
- * @property Money $price
+ * @property Money $payment_amount
+ * @property Money $discount
+ * @property Currency $currency
  */
-class Product extends Model implements HasCurrencyInterface
+class Product extends Model implements HasMoneyWithCurrencyInterface 
 {
+    use HasMoneyWithCurrency;
     use HasCurrency;
 
-    protected $fillable = ['name', 'price', 'currency_code'];
+    protected $fillable = ['name', 'price', 'currency', 'book_price', 'native_currency'];
 
     protected $casts = [
         'price' => MoneyCast::class,
+        'currency' => CurrencyCast::class,
+
+        'book_price' => MoneyCast::class,
+        'native_currency' => CurrencyCast::class
     ];
 
-    /**
-     * Override default currency column (`currency`)
-     *
-     * @var string
-     */
-    protected $currencyColumn = 'currency_code';
+    public function getCurrencyColumnFor(string $field): string
+    {
+        return [
+            'price' => 'currency',
+            'book_price' => 'native_currency',
+        ][$field] ?? '';
+    }
 }
+```
+
+```php
+Product::create([
+    'price' => \Money\Money::USD(1000),
+    'book_price' => Money::UAH(25000),
+]);
 ```
 
 If you want to use magic accessors (`*_as_currency`, `*_as_decimal`) for money fields then you should add `HasMoney` trait to your Eloquent Model (accessors will be added automatically)
@@ -214,7 +323,7 @@ final class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
-            'price_as_currency' => formatMoneyAsCurrency($this->price), // or $this->price_as_currency
+            'price_as_currency' => $this->price_as_currency, // or formatMoneyAsCurrency($this->price)
         ];
     }
 }

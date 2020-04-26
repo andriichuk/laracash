@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Andriichuk\Laracash\Tests;
+namespace Andriichuk\Laracash\Tests\Unit\Concerns;
 
 use Andriichuk\Laracash\Config;
-use Andriichuk\Laracash\Formatter;
+use Andriichuk\Laracash\Concerns\Formatter;
+use Andriichuk\Laracash\Tests\BaseTestCase;
 use Money\Currency;
 use Money\Money;
 use NumberFormatter;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class FormatterTest
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */
-final class FormatterTest extends TestCase
+final class FormatterTest extends BaseTestCase
 {
     /**
-     * @var Formatter
+     * @var \Andriichuk\Laracash\Concerns\Formatter
      */
     private $formatter;
 

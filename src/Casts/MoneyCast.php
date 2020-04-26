@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Andriichuk\Laracash\Casts;
 
-use Andriichuk\Laracash\Model\HasCurrencyInterface;
 use Andriichuk\Laracash\Exceptions\CurrencyMismatchException;
+use Andriichuk\Laracash\Model\HasCurrencyInterface;
+use Andriichuk\Laracash\Model\HasMoneyWithCurrencyInterface;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Andriichuk\Laracash\Facades\Laracash;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +32,7 @@ final class MoneyCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        return Laracash::factory()->make($value, $this->resolveCurrencyColumn($model, $attributes));
+        return Laracash::factory()->make($value, $this->resolveCurrencyColumn($model, $key, $attributes));
     }
 
     /**
@@ -46,40 +47,37 @@ final class MoneyCast implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        $currency = $this->resolveCurrencyColumn($model, $attributes);
-        $money = $value instanceof Money ? $value : Laracash::factory()->make($value, $currency);
-
-        if (
-            $this->hasCurrencyColumn($model)
-            && $model->isStrictCurrencyMode()
-            && !$money->getCurrency()->equals($currency)
-        ) {
-            throw CurrencyMismatchException::createFrom($currency, $money->getCurrency());
-        }
+        $money = $value instanceof Money
+            ? $value
+            : Laracash::factory()->make($value, $this->resolveCurrencyColumn($model, $key, $attributes));
 
         if ($this->hasCurrencyColumn($model)) {
             return [
                 $key => $money->getAmount(),
-                $model->getCurrencyColumn() => $money->getCurrency()->getCode(),
+                $model->getCurrencyColumnFor($key) => $money->getCurrency()->getCode(),
             ];
         }
 
         return (string) $money->getAmount();
     }
 
-    private function resolveCurrencyColumn(Model $model, $attributes): ?Currency
+    private function resolveCurrencyColumn(Model $model, string $key, $attributes): ?Currency
     {
         if (!$this->hasCurrencyColumn($model)) {
             return null;
         }
 
+        $default = $model instanceof HasCurrencyInterface
+            ? $model->getDefaultCurrencyFor($key)
+            : null;
+
         return Laracash::currency()->from(
-            $attributes[$model->getCurrencyColumn()] ?? $model->getDefaultCurrency()
+            $attributes[$model->getCurrencyColumnFor($key)] ?? $default
         );
     }
 
     private function hasCurrencyColumn(Model $model): bool
     {
-        return $model instanceof HasCurrencyInterface;
+        return $model instanceof HasMoneyWithCurrencyInterface;
     }
 }

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Andriichuk\Laracash;
+namespace Andriichuk\Laracash\Concerns;
 
+use Andriichuk\Laracash\Config;
 use Money\Currencies\BitcoinCurrencies;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\BitcoinMoneyFormatter;

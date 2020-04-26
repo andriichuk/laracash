@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Andriichuk\Laracash\Tests;
+namespace Andriichuk\Laracash\Tests\Unit\Concerns;
 
-use Andriichuk\Laracash\CurrencyResolver;
-use InvalidArgumentException;
+use Andriichuk\Laracash\Concerns\CurrencyResolver;
+use Andriichuk\Laracash\Tests\BaseTestCase;
 use Andriichuk\Laracash\Config;
-use Andriichuk\Laracash\Factory;
+use Andriichuk\Laracash\Concerns\Factory;
 use Money\Currency;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
@@ -17,10 +16,10 @@ use stdClass;
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */
-final class FactoryTest extends TestCase
+final class FactoryTest extends BaseTestCase
 {
     /**
-     * @var Factory
+     * @var \Andriichuk\Laracash\Concerns\Factory
      */
     private $factory;
 

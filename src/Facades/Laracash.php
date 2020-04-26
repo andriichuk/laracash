@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Andriichuk\Laracash\Facades;
 
-use Andriichuk\Laracash\CurrencyResolver;
+use Andriichuk\Laracash\Concerns\CurrencyResolver;
 use Illuminate\Support\Facades\Facade;
-use Andriichuk\Laracash\Factory;
-use Andriichuk\Laracash\Formatter;
-use Andriichuk\Laracash\Parser;
+use Andriichuk\Laracash\Concerns\Factory;
+use Andriichuk\Laracash\Concerns\Formatter;
+use Andriichuk\Laracash\Concerns\Parser;
 
 /**
  * Class Laracash
