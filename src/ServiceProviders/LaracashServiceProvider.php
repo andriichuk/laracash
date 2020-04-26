@@ -42,5 +42,7 @@ class LaracashServiceProvider extends ServiceProvider
         $this->app->bind('laracash', function () {
             return new LaracashService(new Config());
         });
+        
+        $this->mergeConfigFrom(dirname(__DIR__) . '/Config/laracash.php' , 'laracash');
     }
 }
