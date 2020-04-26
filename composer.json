@@ -28,7 +28,6 @@
         "ext-bcmath": "*",
         "ext-gmp": "*",
         "ext-intl": "*",
-        "mockery/mockery": "^1.3",
         "orchestra/testbench": "^5.1",
         "phpunit/phpunit": "^8.5"
     },
