@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Andriichuk\Laracash\Casts;
 
-use Andriichuk\Laracash\Exceptions\CurrencyMismatchException;
 use Andriichuk\Laracash\Model\HasCurrencyInterface;
 use Andriichuk\Laracash\Model\HasMoneyWithCurrencyInterface;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Andriichuk\Laracash\Facades\Laracash;
 use Illuminate\Database\Eloquent\Model;
 use Money\Currency;
+use Money\Money;
 
 /**
  * Class MoneyCast

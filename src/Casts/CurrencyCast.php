@@ -25,7 +25,7 @@ final class CurrencyCast implements CastsAttributes
      * @param string $value
      * @param array $attributes
      *
-     * @return Currency
+     * @return \Money\Currency
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -37,7 +37,7 @@ final class CurrencyCast implements CastsAttributes
      *
      * @param Model $model
      * @param string $key
-     * @param Currency|string $value
+     * @param \Money\Currency|string $value
      * @param array $attributes
      *
      * @return string
@@ -48,7 +48,7 @@ final class CurrencyCast implements CastsAttributes
     }
 
     /**
-     * @param Currency|string $value
+     * @param \Money\Currency|string $value
      */
     private function resolveCurrency(Model $model, string $key, $value): Currency
     {
