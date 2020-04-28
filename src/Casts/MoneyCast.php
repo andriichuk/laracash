@@ -11,7 +11,6 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Andriichuk\Laracash\Facades\Laracash;
 use Illuminate\Database\Eloquent\Model;
 use Money\Currency;
-use Money\Money;
 
 /**
  * Class MoneyCast
@@ -25,10 +24,10 @@ final class MoneyCast implements CastsAttributes
      *
      * @param \Illuminate\Contracts\Database\Eloquent\Model $model
      * @param string $key
-     * @param Money|string|int $value
+     * @param \Money\Money|string|int $value
      * @param array $attributes
      *
-     * @return Money
+     * @return \Money\Money
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -40,7 +39,7 @@ final class MoneyCast implements CastsAttributes
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param string $key
-     * @param Money|string|int $value
+     * @param \Money\Money|string|int $value
      * @param array $attributes
      *
      * @return array|string
