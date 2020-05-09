@@ -604,3 +604,20 @@ Money\Money {#368 ▼
   }
 }
 ```
+
+### Tests
+
+Run features and unit tests:
+
+```shell script
+./vendor/bin/phpunit
+```
+
+### Credits
+
+* [Serhii Andriichuk](https://twitter.com/andriichuk29)
+* [and contributors](https://github.com/andriichuk/laracash/graphs/contributors)
+
+### License
+
+Laracash is an open-sourced software licensed under the [MIT](./LICENSE) license.
