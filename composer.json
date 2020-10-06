@@ -50,7 +50,7 @@
                 "Andriichuk\\Laracash\\ServiceProviders\\LaracashServiceProvider"
             ],
             "aliases": {
-                "Laracash": "Andriichuk\\Laracash\\Facade\\Laracash"
+                "Laracash": "Andriichuk\\Laracash\\Facades\\Laracash"
             }
         }
     },
