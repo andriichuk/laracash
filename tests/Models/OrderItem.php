@@ -29,9 +29,14 @@ class OrderItem extends Model implements HasMoneyWithCurrencyInterface, HasCurre
     {
         return $this->belongsTo(Order::class);
     }
-    
+
     public function getDefaultCurrencyFor(string $field): Currency
     {
         return $this->order->currency;
+    }
+
+    public function getCurrencyColumnFor(string $field): string
+    {
+        return '';
     }
 }

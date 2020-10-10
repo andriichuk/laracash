@@ -40,8 +40,8 @@ class ModelWithMoneyAndRelationCurrencyTest extends BaseTestCase
             'unit_price' => $options['price']
         ]);
 
-        $this->assertEquals($expected, $orderModel->price);
-        $this->assertEquals($expected, $orderModel->items()->first()->price);
+        $this->assertEquals($expected, $orderModel->total_price);
+        $this->assertEquals($expected, $orderModel->items()->first()->unit_price);
     }
 
     public function moneyCasesProvider(): array
