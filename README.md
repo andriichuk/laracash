@@ -172,6 +172,7 @@ class Transaction extends Model implements HasMoneyWithCurrencyInterface
     }
 }
 ```
+> If the currency is in a related model, just return an empty string (`''`) in `getCurrencyColumnFor()`.
 
 #### Money to Currencies columns mapping
 
