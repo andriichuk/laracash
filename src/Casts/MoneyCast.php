@@ -50,7 +50,7 @@ final class MoneyCast implements CastsAttributes
             ? $value
             : Laracash::factory()->make($value, $this->resolveCurrencyColumn($model, $key, $attributes));
 
-        if ($this->hasCurrencyColumn($model)) {
+        if ($this->hasCurrencyColumn($model, $key)) {
             return [
                 $key => $money->getAmount(),
                 $model->getCurrencyColumnFor($key) => $money->getCurrency()->getCode(),
@@ -62,7 +62,7 @@ final class MoneyCast implements CastsAttributes
 
     private function resolveCurrencyColumn(Model $model, string $key, $attributes): ?Currency
     {
-        if (!$this->hasCurrencyColumn($model)) {
+        if (!$this->hasCurrencyColumn($model, $key)) {
             return null;
         }
 
@@ -75,8 +75,8 @@ final class MoneyCast implements CastsAttributes
         );
     }
 
-    private function hasCurrencyColumn(Model $model): bool
+    private function hasCurrencyColumn(Model $model, $key): bool
     {
-        return $model instanceof HasMoneyWithCurrencyInterface;
+        return $model instanceof HasMoneyWithCurrencyInterface && $model->getCurrencyColumnFor($key);
     }
 }
