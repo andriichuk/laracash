@@ -9,8 +9,6 @@ jobs:
         strategy:
             matrix:
                 include:
-                    - php-version: 7.4
-                      composer-flags: --prefer-stable --prefer-lowest
                     - php-version: 8.0
                       composer-flags: --prefer-stable --prefer-lowest
         steps:
@@ -22,7 +20,6 @@ jobs:
                   coverage: none
                   php-version: ${{ matrix.php-version }}
             - name: "Install dependencies (lowest dependencies) with composer"
-              if: matrix.composer-flags
               run: |
                   composer update ${{ matrix.composer-flags }} --no-interaction --no-progress --no-suggest
             - name: "Run tests with phpunit/phpunit"
