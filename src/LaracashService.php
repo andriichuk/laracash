@@ -16,25 +16,10 @@ use Andriichuk\Laracash\Concerns\Parser;
  */
 final class LaracashService
 {
-    /**
-     * @var CurrencyResolver
-     */
-    private $currencyResolver;
-
-    /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
-     * @var Formatter
-     */
-    private $formatter;
-
-    /**
-     * @var Parser
-     */
-    private $parser;
+    private CurrencyResolver $currencyResolver;
+    private Factory $factory;
+    private Formatter $formatter;
+    private Parser $parser;
 
     public function __construct(Config $config)
     {

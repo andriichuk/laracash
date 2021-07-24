@@ -9,22 +9,16 @@ use Money\Money;
 
 if (!function_exists('makeMoney')) {
     /**
-     * @param int|string $amount
-     * @param string|Currency|null $currency
-     *
      * @throws InvalidArgumentException
      */
-    function makeMoney($amount, $currency = null): Money
+    function makeMoney(int|string $amount, Currency|string|null $currency = null): Money
     {
         return Laracash::factory()->make($amount, $currency);
     }
 }
 
 if (!function_exists('makeBitcoin')) {
-    /**
-     * @param int|string $amount
-     */
-    function makeBitcoin($amount): Money
+    function makeBitcoin(int|string $amount): Money
     {
         return Laracash::factory()->makeBitcoin($amount);
     }

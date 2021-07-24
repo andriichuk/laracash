@@ -14,10 +14,7 @@ use Illuminate\Config\Repository;
  */
 final class Config
 {
-    /**
-     * @var Repository
-     */
-    private $config;
+    private Repository $config;
 
     /**
      * @throws Exception
@@ -63,10 +60,7 @@ final class Config
         return 'laracash.php';
     }
 
-    /**
-     * @return mixed
-     */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         return $this->config->get($key);
     }

@@ -34,15 +34,13 @@ class LaracashServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind('laracash', function () {
             return new LaracashService(new Config());
         });
-        
+
         $this->mergeConfigFrom(dirname(__DIR__) . '/Config/laracash.php' , 'laracash');
     }
 }

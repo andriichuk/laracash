@@ -15,10 +15,7 @@ use Money\Currency;
  */
 final class CurrencyResolver
 {
-    /**
-     * @var Config
-     */
-    private $config;
+    private Config $config;
 
     public function __construct(Config $config)
     {
@@ -26,11 +23,9 @@ final class CurrencyResolver
     }
 
     /**
-     * @param string|Currency|null $currency
-     *
      * @throws InvalidArgumentException
      */
-    public function from($currency = null): Currency
+    public function from(Currency|string|null $currency = null): Currency
     {
         if ($currency === null) {
             return $this->default();
