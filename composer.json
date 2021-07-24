@@ -29,7 +29,7 @@
         "ext-gmp": "*",
         "ext-intl": "*",
         "orchestra/testbench": "5.5.0",
-        "phpunit/phpunit": "8.5.8"
+        "phpunit/phpunit": "^8.5|^9.0"
     },
     "autoload": {
         "psr-4": {
