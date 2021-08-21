@@ -10,11 +10,11 @@ use Andriichuk\Laracash\Concerns\Formatter;
 use Andriichuk\Laracash\Concerns\Parser;
 
 /**
- * Class LaracashService
+ * Class LaracashMoneyManager
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */
-final class LaracashService
+final class LaracashMoneyManager implements MoneyManagerInterface
 {
     private CurrencyResolver $currencyResolver;
     private Factory $factory;
@@ -44,7 +44,7 @@ final class LaracashService
         return $this->parser;
     }
 
-    public function currency(): CurrencyResolver
+    public function currencyResolver(): CurrencyResolver
     {
         return $this->currencyResolver;
     }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Andriichuk\Laracash\ServiceProviders;
 
+use Andriichuk\Laracash\MoneyManagerInterface;
 use Illuminate\Support\ServiceProvider;
 use Andriichuk\Laracash\Config;
-use Andriichuk\Laracash\LaracashService;
+use Andriichuk\Laracash\LaracashMoneyManager;
 
 /**
  * Class LaracashServiceProvider
@@ -20,8 +21,8 @@ class LaracashServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('laracash', function () {
-            return new LaracashService(new Config());
+        $this->app->singleton(MoneyManagerInterface::class, function () {
+            return new LaracashMoneyManager(new Config());
         });
     }
 

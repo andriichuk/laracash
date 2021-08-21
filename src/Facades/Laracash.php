@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Andriichuk\Laracash\Facades;
 
 use Andriichuk\Laracash\Concerns\CurrencyResolver;
+use Andriichuk\Laracash\MoneyManagerInterface;
 use Illuminate\Support\Facades\Facade;
 use Andriichuk\Laracash\Concerns\Factory;
 use Andriichuk\Laracash\Concerns\Formatter;
@@ -24,6 +25,6 @@ final class Laracash extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'laracash';
+        return MoneyManagerInterface::class;
     }
 }
