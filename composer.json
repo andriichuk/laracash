@@ -22,14 +22,16 @@
         "illuminate/contracts": "^7.2|^8.0",
         "illuminate/support": "^7.2|^8.0",
         "illuminate/config": "^7.2|^8.0",
-        "moneyphp/money": "^4.0"
+        "moneyphp/money": "^4.0",
+        "illuminate/database": "^7.2|^8.0"
     },
     "require-dev": {
         "ext-bcmath": "*",
         "ext-gmp": "*",
         "ext-intl": "*",
-        "orchestra/testbench": "^6.19",
-        "phpunit/phpunit": "^9.0"
+        "phpunit/phpunit": "^9.0",
+        "orchestra/testbench": "^6.20",
+        "vimeo/psalm": "^4.9"
     },
     "autoload": {
         "psr-4": {

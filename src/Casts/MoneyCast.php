@@ -22,15 +22,16 @@ final class MoneyCast implements CastsAttributes
     /**
      * Cast the given value.
      *
-     * @param \Illuminate\Contracts\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @param string $key
-     * @param \Money\Money|string|int $value
+     * @param mixed $value
      * @param array $attributes
      *
      * @return \Money\Money
      */
     public function get($model, $key, $value, $attributes)
     {
+        /** @psalm-var int|numeric-string $value */
         return Laracash::factory()->make($value, $this->resolveCurrencyColumn($model, $key, $attributes));
     }
 
@@ -39,28 +40,34 @@ final class MoneyCast implements CastsAttributes
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param string $key
-     * @param \Money\Money|string|int $value
+     * @param mixed $value
      * @param array $attributes
      *
      * @return array|string
      */
     public function set($model, $key, $value, $attributes)
     {
+        /** @psalm-var non-empty-string $key */
+        /** @psalm-var Money|int|numeric-string $value */
+
         $money = $value instanceof Money
             ? $value
             : Laracash::factory()->make($value, $this->resolveCurrencyColumn($model, $key, $attributes));
 
         if ($this->hasCurrencyColumn($model, $key)) {
+            /** @psalm-var non-empty-string $currencyColumn */
+            $currencyColumn = $model->getCurrencyColumnFor($key);
+
             return [
                 $key => $money->getAmount(),
-                $model->getCurrencyColumnFor($key) => $money->getCurrency()->getCode(),
+                $currencyColumn => $money->getCurrency()->getCode(),
             ];
         }
 
-        return (string) $money->getAmount();
+        return $money->getAmount();
     }
 
-    private function resolveCurrencyColumn(Model $model, string $key, $attributes): ?Currency
+    private function resolveCurrencyColumn(Model $model, string $key, array $attributes): ?Currency
     {
         if (!$this->hasCurrencyColumn($model, $key)) {
             return null;
@@ -70,13 +77,17 @@ final class MoneyCast implements CastsAttributes
             ? $model->getDefaultCurrencyFor($key)
             : null;
 
-        return Laracash::currency()->from(
-            $attributes[$model->getCurrencyColumnFor($key)] ?? $default
-        );
+        /** @psalm-var non-empty-string $currencyColumn */
+        $currencyColumn = $model->getCurrencyColumnFor($key);
+        /** @var Currency|null $currency */
+        $currency = $attributes[$currencyColumn] ?? $default;
+
+        return Laracash::currency()->from($currency);
     }
 
-    private function hasCurrencyColumn(Model $model, $key): bool
+    private function hasCurrencyColumn(Model $model, string $key): bool
     {
+        /** @psalm-var non-empty-string $key */
         return $model instanceof HasMoneyWithCurrencyInterface && $model->getCurrencyColumnFor($key);
     }
 }

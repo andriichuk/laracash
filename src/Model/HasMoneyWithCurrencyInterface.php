@@ -11,5 +11,10 @@ namespace Andriichuk\Laracash\Model;
  */
 interface HasMoneyWithCurrencyInterface
 {
+    /**
+     * @psalm-param non-empty-string $field
+     *
+     * @psalm-return non-empty-string
+     */
     public function getCurrencyColumnFor(string $field): string;
 }

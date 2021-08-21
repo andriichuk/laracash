@@ -9,6 +9,9 @@ use Money\Money;
 
 if (!function_exists('makeMoney')) {
     /**
+     * @psalm-param int|numeric-string $amount
+     * @psalm-param Currency|non-empty-string|null $currency
+     *
      * @throws InvalidArgumentException
      */
     function makeMoney(int|string $amount, Currency|string|null $currency = null): Money
@@ -18,6 +21,9 @@ if (!function_exists('makeMoney')) {
 }
 
 if (!function_exists('makeBitcoin')) {
+    /**
+     * @psalm-param int|numeric-string $amount
+     */
     function makeBitcoin(int|string $amount): Money
     {
         return Laracash::factory()->makeBitcoin($amount);

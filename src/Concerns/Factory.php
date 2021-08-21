@@ -23,6 +23,9 @@ final class Factory
     }
 
     /**
+     * @psalm-param int|numeric-string $amount
+     * @psalm-param Currency|non-empty-string|null $currency
+     *
      * @throws InvalidArgumentException
      */
     public function make(int|string $amount, Currency|string|null $currency = null): Money
@@ -30,6 +33,9 @@ final class Factory
         return new Money($amount, $this->currencyResolver->from($currency));
     }
 
+    /**
+     * @psalm-param int|numeric-string $amount
+     */
     public function makeBitcoin(int|string $amount): Money
     {
         return Money::XBT($amount);

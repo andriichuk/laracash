@@ -16,10 +16,22 @@ use Andriichuk\Laracash\LaracashService;
 class LaracashServiceProvider extends ServiceProvider
 {
     /**
+     * Register the service provider.
+     */
+    public function register(): void
+    {
+        $this->app->singleton('laracash', function () {
+            return new LaracashService(new Config());
+        });
+    }
+
+    /**
      * Boot the package.
      */
-    public function boot()
+    public function boot(): void
     {
+        $this->mergeConfigFrom(dirname(__DIR__) . '/Config/laracash.php' , 'laracash');
+
         $this->publishes([
             dirname(__DIR__) . '/Config/laracash.php' => config_path('laracash.php'),
         ], 'config');
@@ -30,17 +42,5 @@ class LaracashServiceProvider extends ServiceProvider
     private function registerHelpers(): void
     {
         require_once dirname(__DIR__) . '/Helpers/helpers.php';
-    }
-
-    /**
-     * Register the service provider.
-     */
-    public function register(): void
-    {
-        $this->app->bind('laracash', function () {
-            return new LaracashService(new Config());
-        });
-
-        $this->mergeConfigFrom(dirname(__DIR__) . '/Config/laracash.php' , 'laracash');
     }
 }

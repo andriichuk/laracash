@@ -20,15 +20,16 @@ final class CurrencyCast implements CastsAttributes
     /**
      * Cast the given value.
      *
-     * @param \Illuminate\Contracts\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @param string $key
-     * @param string $value
+     * @param mixed $value
      * @param array $attributes
      *
      * @return \Money\Currency
      */
     public function get($model, $key, $value, $attributes)
     {
+        /** @psalm-var Currency|non-empty-string|null $value */
         return $this->resolveCurrency($model, $key, $value);
     }
 
@@ -37,20 +38,21 @@ final class CurrencyCast implements CastsAttributes
      *
      * @param Model $model
      * @param string $key
-     * @param \Money\Currency|string $value
+     * @param mixed $value
      * @param array $attributes
      *
      * @return string
      */
     public function set($model, $key, $value, $attributes)
     {
+        /** @psalm-var Currency|non-empty-string|null $value */
         return $this->resolveCurrency($model, $key, $value)->getCode();
     }
 
     /**
-     * @param \Money\Currency|string $value
+     * @psalm-param Currency|non-empty-string|null $value
      */
-    private function resolveCurrency(Model $model, string $key, $value): Currency
+    private function resolveCurrency(Model $model, string $key, Currency|string|null $value): Currency
     {
         $default = $model instanceof HasCurrencyInterface
             ? $model->getDefaultCurrencyFor($key)

@@ -23,23 +23,26 @@ final class CurrencyResolver
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @psalm-param Currency|non-empty-string|null $currency
      */
     public function from(Currency|string|null $currency = null): Currency
     {
         if ($currency === null) {
             return $this->default();
-        } elseif (is_string($currency) && trim($currency) !== '') {
-            return new Currency(mb_strtoupper($currency));
-        } elseif ($currency instanceof Currency) {
-            return $currency;
         }
 
-        throw new InvalidArgumentException('Invalid type');
+        if (is_string($currency)) {
+            return new Currency($currency);
+        }
+
+        return $currency;
     }
 
     public function default(): Currency
     {
-        return new Currency($this->config->get('currency'));
+        /** @psalm-var non-empty-string $currency */
+        $currency = (string) $this->config->get('currency');
+
+        return new Currency($currency);
     }
 }

@@ -21,10 +21,12 @@ final class Config
      */
     public function __construct()
     {
-        $this->config = new Repository(require $this->configFile());
+        /** @var array $config */
+        $config = require $this->configFile();
+        $this->config = new Repository($config);
     }
 
-    private function configFile()
+    private function configFile(): string
     {
         $appConfigFile = $this->appConfigFilePath();
 
