@@ -82,7 +82,7 @@ final class MoneyCast implements CastsAttributes
         /** @var Currency|null $currency */
         $currency = $attributes[$currencyColumn] ?? $default;
 
-        return Laracash::currency()->from($currency);
+        return Laracash::currencyResolver()->from($currency);
     }
 
     private function hasCurrencyColumn(Model $model, string $key): bool

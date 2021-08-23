@@ -57,6 +57,6 @@ trait HasCurrency
 
     private function getDefaultCurrency(): Currency
     {
-        return Laracash::currency()->default();
+        return Laracash::currencyResolver()->default();
     }
 }

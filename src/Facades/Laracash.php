@@ -17,7 +17,7 @@ use Andriichuk\Laracash\Concerns\Parser;
  * @method static Factory factory()
  * @method static Formatter formatter()
  * @method static Parser parser()
- * @method static CurrencyResolver currency()
+ * @method static CurrencyResolver currencyResolver()
  *
  * @author Serhii Andriichuk <andriichuk29@gmail.com>
  */

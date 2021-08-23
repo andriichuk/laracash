@@ -56,8 +56,8 @@ final class CurrencyCast implements CastsAttributes
     {
         $default = $model instanceof HasCurrencyInterface
             ? $model->getDefaultCurrencyFor($key)
-            : Laracash::currency()->default();
+            : Laracash::currencyResolver()->default();
 
-        return Laracash::currency()->from($value ?? $default);
+        return Laracash::currencyResolver()->from($value ?? $default);
     }
 }
