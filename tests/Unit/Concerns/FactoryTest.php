@@ -81,25 +81,6 @@ final class FactoryTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @dataProvider exceptionDataProvider
-     */
-    public function testThrowException($amount, $currency): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->factory->make($amount, $currency);
-    }
-
-    public function exceptionDataProvider(): array
-    {
-        return [
-            'empty string currency' => [1, ''],
-            'numeric currency' => [1, 100],
-            'simple object currency' => [1, new stdClass()],
-        ];
-    }
-
     public function testBitcoinCreation(): void
     {
         $money = $this->factory->makeBitcoin('1000000000');

@@ -20,20 +20,9 @@ use NumberFormatter;
  */
 final class Formatter
 {
-    /**
-     * @var  Config
-     */
-    private $config;
-
-    /**
-     * @var ISOCurrencies
-     */
-    private $isoCurrencies;
-
-    /**
-     * @var BitcoinCurrencies
-     */
-    private $bitcoinCurrencies;
+    private Config $config;
+    private ISOCurrencies $isoCurrencies;
+    private BitcoinCurrencies $bitcoinCurrencies;
 
     public function __construct(Config $config)
     {
@@ -49,14 +38,14 @@ final class Formatter
 
     public function formatAsIntlCurrency(Money $money, string $locale = null): string
     {
-        $locale = $locale ?: $this->config->get('locale');
+        $locale = $locale ?: (string) $this->config->get('locale');
 
         return $this->getIntlFormatter($locale, NumberFormatter::CURRENCY)->format($money);
     }
 
     public function formatAsIntlDecimal(Money $money, string $locale = null): string
     {
-        $locale = $locale ?: $this->config->get('locale');
+        $locale = $locale ?: (string) $this->config->get('locale');
 
         return $this->getIntlFormatter($locale, NumberFormatter::DECIMAL)->format($money);
     }

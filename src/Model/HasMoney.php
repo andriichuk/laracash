@@ -13,10 +13,7 @@ use Andriichuk\Laracash\Casts\MoneyCast;
  */
 trait HasMoney
 {
-    /**
-     * @var array
-     */
-    private $moneyCasts = [];
+    private array $moneyCasts = [];
 
     protected function initializeHasMoney(): void
     {

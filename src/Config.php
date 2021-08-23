@@ -14,20 +14,19 @@ use Illuminate\Config\Repository;
  */
 final class Config
 {
-    /**
-     * @var Repository
-     */
-    private $config;
+    private Repository $config;
 
     /**
      * @throws Exception
      */
     public function __construct()
     {
-        $this->config = new Repository(require $this->configFile());
+        /** @var array $config */
+        $config = require $this->configFile();
+        $this->config = new Repository($config);
     }
 
-    private function configFile()
+    private function configFile(): string
     {
         $appConfigFile = $this->appConfigFilePath();
 
@@ -63,10 +62,7 @@ final class Config
         return 'laracash.php';
     }
 
-    /**
-     * @return mixed
-     */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         return $this->config->get($key);
     }

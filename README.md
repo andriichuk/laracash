@@ -1,19 +1,44 @@
-## PHP Laravel Money Package
+# PHP Laravel Money Package
 
 ![Logo](./docs/logo.png)
 
 [![GitHub stars](https://img.shields.io/github/stars/andriichuk/laracash)](https://github.com/andriichuk/laracash)
 [![Total Downloads](https://poser.pugx.org/andriichuk/laracash/downloads?format=flat)](https://packagist.org/packages/andriichuk/laracash)
 [![Latest Stable Version](https://poser.pugx.org/andriichuk/laracash/v/stable?format=flat)](https://packagist.org/packages/andriichuk/laracash)
+[![Psalm type coverage](https://shepherd.dev/github/andriichuk/laracash/coverage.svg)](https://packagist.org/packages/andriichuk/laracash)
+[![Psalm enabled](https://shepherd.dev/github/andriichuk/laracash/level.svg)](https://packagist.org/packages/andriichuk/laracash)
 [![License](https://poser.pugx.org/andriichuk/laracash/license?format=flat)](https://packagist.org/packages/andriichuk/laracash)
 
-* Laravel wrapper over [MoneyPHP](https://github.com/moneyphp/money) library
+* Laravel wrapper over the [MoneyPHP](https://github.com/moneyphp/money) library
 * Provides a convenient way to work with the money column as a Value Object
 * Uses the [Custom Casts](https://laravel.com/docs/7.x/eloquent-mutators#custom-casts) Laravel 7.x feature 
 
+# Table of Contents
+
+* [Features](#features)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* Supported concepts
+    * [Money columns with default Currency (without a specific column)](#money-columns-with-default-currency)
+    * [Currency columns without Money](#currency-columns-without-money)
+    * [Multiple Money columns refer to one Currency column](#multiple-money-columns-refer-to-one-currency-column)
+    * [Money to Currencies columns mapping](#money-to-currencies-columns-mapping)
+* [Display money data in the form input field](#display-money-data-in-the-form-input-field)
+* [Parse money from request field](#parse-money-from-request-field)
+* [Using in API resources](#using-in-api-resources)
+* [Model creation](#model-creation)
+* [Bitcoin creation](#bitcoin-creation)
+* [Retrieving data](#retrieving-data)
+* [Operations](#operations)
+* Library API
+    * [Creation](#creation)
+    * [Formatting](#formatting)
+    * [Bitcoin](#bitcoin)
+    * [Parsing](#parsing)
+
 ### Features
 
-* Convenient work with the native MoneyPHP library and Laravel Eloquent ORM
+* Convenient work with the native the MoneyPHP library and Laravel Eloquent ORM
 * Money columns casting
 * Currencies columns casting
 * Supported concepts
@@ -24,9 +49,8 @@
 
 ### Requirements
 
-* PHP >= 7.2.5
-* Laravel v7.x
-* JSON PHP Extension (`ext-json`)
+* PHP ^8.0
+* Laravel v7.x|v8.x
 
 Suggest
 
@@ -134,7 +158,7 @@ Rate::create([
 ]);
 ```
 
-### Many Money columns reference to one Currency column
+### Multiple Money columns refer to one Currency column
 
 ```php
 use Andriichuk\Laracash\Casts\CurrencyCast;
@@ -291,7 +315,7 @@ Present money object as a decimal value
 <input type="number" name="price" value="{{ $product->price_as_decimal }}">
 ```
 
-### Get money from request
+### Parse money from request field
 
 ```php
 
@@ -304,7 +328,7 @@ Route::post('products/{product}', function (Product $product, Request $request) 
 });
 ```
 
-### Serialization
+### Using in API resources
 
 Define model resource
 

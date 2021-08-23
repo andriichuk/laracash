@@ -15,10 +15,7 @@ use Money\Money;
  */
 final class Factory
 {
-    /**
-     * @var CurrencyResolver
-     */
-    private $currencyResolver;
+    private CurrencyResolver $currencyResolver;
 
     public function __construct(CurrencyResolver $currencyResolver)
     {
@@ -26,20 +23,20 @@ final class Factory
     }
 
     /**
-     * @param int|string $amount
-     * @param string|Currency|null $currency
+     * @psalm-param int|numeric-string $amount
+     * @psalm-param Currency|non-empty-string|null $currency
      *
      * @throws InvalidArgumentException
      */
-    public function make($amount, $currency = null): Money
+    public function make(int|string $amount, Currency|string|null $currency = null): Money
     {
         return new Money($amount, $this->currencyResolver->from($currency));
     }
 
     /**
-     * @param int|string $amount
+     * @psalm-param int|numeric-string $amount
      */
-    public function makeBitcoin($amount): Money
+    public function makeBitcoin(int|string $amount): Money
     {
         return Money::XBT($amount);
     }

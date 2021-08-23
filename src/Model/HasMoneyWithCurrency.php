@@ -13,10 +13,7 @@ trait HasMoneyWithCurrency
 {
     use HasMoney;
 
-    /**
-     * @var array
-     */
-    private $moneyCasts = [];
+    private array $moneyCasts = [];
 
     public function getCurrencyColumnFor(string $field): string
     {

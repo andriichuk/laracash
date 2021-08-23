@@ -16,10 +16,7 @@ use Money\Currency;
  */
 trait HasCurrency
 {
-    /**
-     * @var array
-     */
-    private $currencyFields = [];
+    private array $currencyFields = [];
 
     protected function initializeHasCurrency(): void
     {
@@ -60,6 +57,6 @@ trait HasCurrency
 
     private function getDefaultCurrency(): Currency
     {
-        return Laracash::currency()->default();
+        return Laracash::currencyResolver()->default();
     }
 }
