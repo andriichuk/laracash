@@ -24,3 +24,5 @@ jobs:
                   composer update ${{ matrix.composer-flags }} --no-interaction --no-progress --no-suggest
             - name: "Run tests with phpunit/phpunit"
               run: vendor/bin/phpunit
+            - name: "Run Psalm check"
+              run: vendor/bin/psalm --shepherd

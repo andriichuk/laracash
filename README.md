@@ -5,6 +5,8 @@
 [![GitHub stars](https://img.shields.io/github/stars/andriichuk/laracash)](https://github.com/andriichuk/laracash)
 [![Total Downloads](https://poser.pugx.org/andriichuk/laracash/downloads?format=flat)](https://packagist.org/packages/andriichuk/laracash)
 [![Latest Stable Version](https://poser.pugx.org/andriichuk/laracash/v/stable?format=flat)](https://packagist.org/packages/andriichuk/laracash)
+[![Psalm type coverage](https://shepherd.dev/github/andriichuk/laracash/coverage.svg)](https://packagist.org/packages/andriichuk/laracash)
+[![Psalm enabled](https://shepherd.dev/github/andriichuk/laracash/level.svg)](https://packagist.org/packages/andriichuk/laracash)
 [![License](https://poser.pugx.org/andriichuk/laracash/license?format=flat)](https://packagist.org/packages/andriichuk/laracash)
 
 * Laravel wrapper over the [MoneyPHP](https://github.com/moneyphp/money) library
