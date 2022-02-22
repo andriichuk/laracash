@@ -55,6 +55,16 @@ class ModelWithCurrencyTest extends BaseTestCase
         $this->assertEquals(new Currency('UAH'), $model->native_currency);
     }
 
+    public function testNullableCasts(): void
+    {
+        $model = $this->modelInstance::create([
+            'name' => 'Test rate',
+            'currency' => null,
+        ]);
+
+        $this->assertEquals(new Currency('USD'), $model->currency);
+    }
+
     public function provideModelInstance(): Model
     {
         return new class() extends Model implements HasCurrencyInterface {
@@ -85,7 +95,7 @@ class ModelWithCurrencyTest extends BaseTestCase
         $this->app['db']->connection()->getSchemaBuilder()->create('rates', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->char('currency', 3);
+            $table->char('currency', 3)->nullable();
             $table->char('native_currency', 3);
         });
     }
