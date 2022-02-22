@@ -27,10 +27,14 @@ final class MoneyCast implements CastsAttributes
      * @param mixed $value
      * @param array $attributes
      *
-     * @return \Money\Money
+     * @return \Money\Money|null
      */
     public function get($model, $key, $value, $attributes)
     {
+        if ($value === null) {
+            return null;
+        }
+
         /** @psalm-var int|numeric-string $value */
         return Laracash::factory()->make($value, $this->resolveCurrencyColumn($model, $key, $attributes));
     }
@@ -43,12 +47,16 @@ final class MoneyCast implements CastsAttributes
      * @param mixed $value
      * @param array $attributes
      *
-     * @return array|string
+     * @return array|string|null
      */
     public function set($model, $key, $value, $attributes)
     {
         /** @psalm-var non-empty-string $key */
-        /** @psalm-var Money|int|numeric-string $value */
+        /** @psalm-var Money|int|numeric-string|null $value */
+
+        if ($value === null) {
+            return null;
+        }
 
         $money = $value instanceof Money
             ? $value

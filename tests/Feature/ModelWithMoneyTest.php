@@ -7,6 +7,7 @@ namespace Andriichuk\Laracash\Tests\Feature;
 use Andriichuk\Laracash\Casts\MoneyCast;
 use Andriichuk\Laracash\Model\HasMoney;
 use Andriichuk\Laracash\Tests\BaseTestCase;
+use Generator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Money\Money;
@@ -37,31 +38,40 @@ class ModelWithMoneyTest extends BaseTestCase
      *
      * @param mixed $price
      */
-    public function testMoneyCasts($price, string $expected): void
+    public function testMoneyCasts($price, ?Money $expected, string $message): void
     {
         $model = $this->modelInstance::create([
             'name' => 'Product Name',
             'price' => $price,
         ]);
 
-        $this->assertSame($expected, $model->price->getAmount());
+        $this->assertEquals($expected, $model->price, $message);
     }
 
-    public function moneyCasesProvider(): array
+    public function moneyCasesProvider(): Generator
     {
-        return [
-            'from string' => [
-                '1000',
-                '1000',
-            ],
-            'from integer' => [
-                100000,
-                '100000',
-            ],
-            'from native Money object' => [
-                Money::USD(1000),
-                '1000'
-            ]
+        yield [
+            'subject' => '1000',
+            'expected' => Money::USD(1000),
+            'message' => 'From numeric string'
+        ];
+
+        yield [
+            'subject' => 100000,
+            'expected' => Money::USD(100000),
+            'message' => 'From integer'
+        ];
+
+        yield [
+            'subject' => Money::USD(1000),
+            'expected' => Money::USD(1000),
+            'message' => 'From Money object'
+        ];
+
+        yield [
+            'subject' => null,
+            'expected' => null,
+            'message' => 'From null'
         ];
     }
 
@@ -99,7 +109,7 @@ class ModelWithMoneyTest extends BaseTestCase
         $this->app['db']->connection()->getSchemaBuilder()->create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('price');
+            $table->string('price')->nullable();
         });
     }
 }
