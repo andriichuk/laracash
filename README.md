@@ -1,6 +1,10 @@
 # PHP Laravel Money Package
 
-![Logo](./docs/logo.png)
+[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://vshymanskyy.github.io/StandWithUkraine/)
+
+<p align="center">
+    <img width="700" align="center" src="https://github.com/andriichuk/laracash/blob/master/docs/logo.png" alt="Logo"/>
+</p>
 
 [![GitHub stars](https://img.shields.io/github/stars/andriichuk/laracash)](https://github.com/andriichuk/laracash)
 [![Total Downloads](https://poser.pugx.org/andriichuk/laracash/downloads?format=flat)](https://packagist.org/packages/andriichuk/laracash)
