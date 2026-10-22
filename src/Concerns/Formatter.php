@@ -36,14 +36,14 @@ final class Formatter
         return $this->getIntlFormatter($locale, $style)->format($money);
     }
 
-    public function formatAsIntlCurrency(Money $money, string $locale = null): string
+    public function formatAsIntlCurrency(Money $money, ?string $locale = null): string
     {
         $locale = $locale ?: (string) $this->config->get('locale');
 
         return $this->getIntlFormatter($locale, NumberFormatter::CURRENCY)->format($money);
     }
 
-    public function formatAsIntlDecimal(Money $money, string $locale = null): string
+    public function formatAsIntlDecimal(Money $money, ?string $locale = null): string
     {
         $locale = $locale ?: (string) $this->config->get('locale');
 

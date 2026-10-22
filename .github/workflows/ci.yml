@@ -2,27 +2,78 @@ name: CI
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   phpunit:
-        name: PHPUnit
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                include:
-                    - php-version: 8.0
-                      composer-flags: --prefer-stable --prefer-lowest
-        steps:
-            - name: "Checkout"
-              uses: actions/checkout@v2
-            - name: "Setup PHP"
-              uses: shivammathur/setup-php@v2
-              with:
-                  coverage: none
-                  php-version: ${{ matrix.php-version }}
-            - name: "Install dependencies (lowest dependencies) with composer"
-              run: |
-                  composer update ${{ matrix.composer-flags }} --no-interaction --no-progress --no-suggest
-            - name: "Run tests with phpunit/phpunit"
-              run: vendor/bin/phpunit
-            - name: "Run Psalm check"
-              run: vendor/bin/psalm --shepherd
+    name: Laravel ${{ matrix.laravel }} / PHP ${{ matrix.php }} / ${{ matrix.dependencies || 'highest' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - laravel: 7
+            testbench: '^5.20'
+            php: '8.0'
+          - laravel: 8
+            testbench: '^6.20'
+            php: '8.0'
+          - laravel: 9
+            testbench: '^7.0'
+            php: '8.0'
+          - laravel: 9
+            testbench: '^7.0'
+            php: '8.2'
+          - laravel: 10
+            testbench: '^8.0'
+            php: '8.1'
+          - laravel: 10
+            testbench: '^8.0'
+            php: '8.3'
+          - laravel: 11
+            testbench: '^9.0'
+            php: '8.2'
+          - laravel: 11
+            testbench: '^9.0'
+            php: '8.4'
+          - laravel: 12
+            testbench: '^10.0'
+            php: '8.2'
+          - laravel: 12
+            testbench: '^10.0'
+            php: '8.5'
+          - laravel: 13
+            testbench: '^11.0'
+            php: '8.3'
+          - laravel: 13
+            testbench: '^11.0'
+            php: '8.5'
+          - laravel: 8
+            testbench: '^6.20'
+            php: '8.0'
+            dependencies: lowest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: bcmath, gmp, intl, pdo_sqlite
+          tools: composer:v2
+          coverage: none
+      - name: Validate composer.json
+        run: composer validate --strict
+      - name: Select Laravel version
+        run: composer require --dev "orchestra/testbench:${{ matrix.testbench }}" --no-update --no-interaction
+      - name: Install dependencies
+        # Historical Laravel releases have known advisories; allow them only in legacy CI jobs.
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: ${{ matrix.laravel < 12 && '1' || '0' }}
+        run: composer update --prefer-stable ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }} --no-interaction --no-progress
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --fail-on-warning
+      - name: Run Psalm on the lowest supported dependencies
+        if: matrix.dependencies == 'lowest'
+        run: vendor/bin/psalm --shepherd

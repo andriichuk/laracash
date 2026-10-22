@@ -26,11 +26,16 @@ trait HasCurrency
 
     private function grabCurrencyFields(): void
     {
+        // Laravel 13 may initialize this trait before merging the casts() method.
+        $casts = method_exists($this, 'casts')
+            ? array_merge($this->getCasts(), $this->casts())
+            : $this->getCasts();
+
         /**
          * @var string $field
          * @var string $cast
          */
-        foreach ($this->casts as $field => $cast) {
+        foreach ($casts as $field => $cast) {
             if ($cast !== CurrencyCast::class) {
                 continue;
             }
