@@ -101,6 +101,10 @@ Default settings
 ]
 ```
 
+Configuration is read from Laravel's configuration repository, including cached
+configuration and runtime `config()` overrides. Defaults are merged during service
+provider registration. Standalone use of `Config` retains file-based defaults.
+
 ### Usage Concepts
 
 #### Money columns with default Currency
@@ -299,6 +303,8 @@ class Product extends Model
     ];
 }
 ```
+
+Formatted accessors return `null` when the underlying money value is `null`.
 
 Now you can call magic fields
 

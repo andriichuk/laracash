@@ -21,6 +21,8 @@ class LaracashServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(dirname(__DIR__) . '/Config/laracash.php', 'laracash');
+
         $this->app->singleton(MoneyManagerInterface::class, function () {
             return new LaracashMoneyManager(new Config());
         });
@@ -31,8 +33,6 @@ class LaracashServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->mergeConfigFrom(dirname(__DIR__) . '/Config/laracash.php' , 'laracash');
-
         $this->publishes([
             dirname(__DIR__) . '/Config/laracash.php' => config_path('laracash.php'),
         ], 'config');

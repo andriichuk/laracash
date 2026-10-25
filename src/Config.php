@@ -6,6 +6,7 @@ namespace Andriichuk\Laracash;
 
 use Exception;
 use Illuminate\Config\Repository;
+use Illuminate\Contracts\Config\Repository as RepositoryContract;
 
 /**
  * Class Config
@@ -14,13 +15,26 @@ use Illuminate\Config\Repository;
  */
 final class Config
 {
-    private Repository $config;
+    private RepositoryContract $config;
+    private string $prefix = '';
 
     /**
      * @throws Exception
      */
-    public function __construct()
+    public function __construct(?RepositoryContract $config = null)
     {
+        if ($config === null && function_exists('app') && app()->bound('config')) {
+            /** @var RepositoryContract $config */
+            $config = app('config');
+        }
+
+        if ($config !== null) {
+            $this->config = $config;
+            $this->prefix = 'laracash.';
+
+            return;
+        }
+
         /** @var array $config */
         $config = require $this->configFile();
         $this->config = new Repository($config);
@@ -45,7 +59,7 @@ final class Config
 
     private function appConfigFilePath(): string
     {
-        if (function_exists('config_path')) {
+        if (function_exists('config_path') && function_exists('app') && method_exists(app(), 'configPath')) {
             return config_path($this->fileName());
         }
 
@@ -64,6 +78,6 @@ final class Config
 
     public function get(string $key): mixed
     {
-        return $this->config->get($key);
+        return $this->config->get($this->prefix . $key);
     }
 }
