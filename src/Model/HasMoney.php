@@ -39,11 +39,15 @@ trait HasMoney
     protected function addAccessor(string $field): void
     {
         $this->moneyCasts[$field . '_as_currency'] = function () use ($field) {
-            return formatMoneyAsCurrency($this->{$field});
+            $money = $this->{$field};
+
+            return $money === null ? null : formatMoneyAsCurrency($money);
         };
 
         $this->moneyCasts[$field . '_as_decimal'] = function () use ($field) {
-            return formatMoneyAsDecimal($this->{$field});
+            $money = $this->{$field};
+
+            return $money === null ? null : formatMoneyAsDecimal($money);
         };
     }
 

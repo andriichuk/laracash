@@ -89,6 +89,24 @@ class ModelWithMoneyTest extends BaseTestCase
         $this->assertSame('10.99', $model->price_as_decimal);
     }
 
+    public function testNullableMoneyFormatting(): void
+    {
+        $model = $this->modelInstance::create(['name' => 'No price', 'price' => null]);
+
+        $this->assertNull($model->price_as_currency);
+        $this->assertNull($model->price_as_decimal);
+        $this->assertNull($model->fresh()->price_as_currency);
+        $this->assertNull($model->fresh()->price_as_decimal);
+    }
+
+    public function testZeroMoneyFormatting(): void
+    {
+        $model = $this->modelInstance::create(['name' => 'Free', 'price' => 0]);
+
+        $this->assertSame('$0.00', $model->price_as_currency);
+        $this->assertSame('0.00', $model->price_as_decimal);
+    }
+
     public function provideModelInstance(): Model
     {
         return new class() extends Model {
