@@ -37,6 +37,8 @@ final class CurrencyCode implements Rule
 
     public function message(): string
     {
-        return (string) trans('laracash::validation.currency_code');
+        $message = trans('laracash::validation.currency_code');
+
+        return is_string($message) ? $message : 'The :attribute must be a supported currency code.';
     }
 }

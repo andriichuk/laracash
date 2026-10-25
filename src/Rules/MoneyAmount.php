@@ -51,7 +51,9 @@ final class MoneyAmount implements Rule
 
     public function message(): string
     {
-        return (string) trans('laracash::validation.money_amount');
+        $message = trans('laracash::validation.money_amount');
+
+        return is_string($message) ? $message : 'The :attribute must be a decimal amount with valid currency precision and within the allowed range.';
     }
 
     private function parse(mixed $value): ?Money
