@@ -9,6 +9,7 @@ use Andriichuk\Laracash\Tests\BaseTestCase;
 use Andriichuk\Laracash\Config;
 use Andriichuk\Laracash\Concerns\Factory;
 use Money\Currency;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 
 /**
@@ -35,6 +36,7 @@ final class FactoryTest extends BaseTestCase
     /**
      * @dataProvider moneyProvider
      */
+    #[DataProvider('moneyProvider')]
     public function testCreateFrom(array $input, array $expected): void
     {
         $money = $this->factory->make($input['amount'], $input['currency']);
@@ -43,7 +45,7 @@ final class FactoryTest extends BaseTestCase
         $this->assertSame($expected['currency'], $money->getCurrency()->getCode());
     }
 
-    public function moneyProvider(): array
+    public static function moneyProvider(): array
     {
         return [
             'scalar values' => [

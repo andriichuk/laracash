@@ -3,7 +3,6 @@
          xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
-         verbose="true"
 >
     <testsuites>
         <testsuite name="Unit">
@@ -13,9 +12,4 @@
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
 </phpunit>

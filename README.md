@@ -53,8 +53,25 @@
 
 ### Requirements
 
-* PHP ^8.0
-* Laravel v7.x|v8.x
+* PHP ^8.0 (tested through PHP 8.5, inclusive)
+* Laravel 7.30+, 8.40+, 9.x, 10.x, 11.x, 12.x, or 13.x
+
+The PHP versions verified in CI depend on your Laravel version:
+
+| Laravel | Tested PHP versions |
+| --- | --- |
+| 7 | 8.0 |
+| 8 | 8.0, 8.1 |
+| 9 | 8.0, 8.1, 8.2 |
+| 10 | 8.1, 8.2, 8.3 |
+| 11 | 8.2, 8.3, 8.4 |
+| 12 | 8.2, 8.3, 8.4, 8.5 |
+| 13 | 8.3, 8.4, 8.5 |
+
+Use Laravel 12 or 13 when running PHP 8.5.
+
+Laravel 12 and 13 are the currently maintained framework versions. Compatibility
+with Laravel 7–11 is retained for existing applications.
 
 Suggest
 
@@ -637,7 +654,15 @@ Money\Money {#368 ▼
 
 ### Tests
 
-Run features and unit tests:
+CI runs the suite against every PHP minor listed above, from PHP 8.0 through 8.5,
+and retains a lowest-dependency Laravel 8 job with Psalm. Laravel 12 and 13 jobs
+also fail on PHP and PHPUnit deprecations. Legacy CI jobs allow
+historical dependencies with security advisories so compatibility can still be
+checked; this does not change Composer's security policy for package users.
+
+Tests cover both the `$casts` property and Laravel 11+'s `casts()` method.
+
+Run feature and unit tests:
 
 ```shell script
 ./vendor/bin/phpunit

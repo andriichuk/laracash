@@ -11,6 +11,7 @@ use Generator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Money\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class ModelWithMoneyTest
@@ -38,6 +39,7 @@ class ModelWithMoneyTest extends BaseTestCase
      *
      * @param mixed $price
      */
+    #[DataProvider('moneyCasesProvider')]
     public function testMoneyCasts($price, ?Money $expected, string $message): void
     {
         $model = $this->modelInstance::create([
@@ -48,28 +50,28 @@ class ModelWithMoneyTest extends BaseTestCase
         $this->assertEquals($expected, $model->price, $message);
     }
 
-    public function moneyCasesProvider(): Generator
+    public static function moneyCasesProvider(): Generator
     {
         yield [
-            'subject' => '1000',
+            'price' => '1000',
             'expected' => Money::USD(1000),
             'message' => 'From numeric string'
         ];
 
         yield [
-            'subject' => 100000,
+            'price' => 100000,
             'expected' => Money::USD(100000),
             'message' => 'From integer'
         ];
 
         yield [
-            'subject' => Money::USD(1000),
+            'price' => Money::USD(1000),
             'expected' => Money::USD(1000),
             'message' => 'From Money object'
         ];
 
         yield [
-            'subject' => null,
+            'price' => null,
             'expected' => null,
             'message' => 'From null'
         ];

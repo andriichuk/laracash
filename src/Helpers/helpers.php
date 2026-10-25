@@ -31,7 +31,7 @@ if (!function_exists('makeBitcoin')) {
 }
 
 if (!function_exists('formatMoneyAsCurrency')) {
-    function formatMoneyAsCurrency(Money $money, string $locale = null): string
+    function formatMoneyAsCurrency(Money $money, ?string $locale = null): string
     {
         if ($money->getCurrency()->getCode() === BitcoinCurrencies::CODE) {
             return Laracash::formatter()->formatBitcoin($money);
@@ -53,7 +53,7 @@ if (!function_exists('formatMoneyAsDecimal')) {
 }
 
 if (!function_exists('parseMoneyDecimal')) {
-    function parseMoneyDecimal(string $amount, string $currency = null): Money
+    function parseMoneyDecimal(string $amount, ?string $currency = null): Money
     {
         return Laracash::parser()->parseDecimal($amount, $currency);
     }

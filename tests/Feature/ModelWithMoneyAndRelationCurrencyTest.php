@@ -8,6 +8,7 @@ use Andriichuk\Laracash\Tests\BaseTestCase;
 use Andriichuk\Laracash\Tests\Models\Order;
 use Illuminate\Database\Schema\Blueprint;
 use Money\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class ModelWithOneMoneyToOneCurrencyColumnTest
@@ -29,6 +30,7 @@ class ModelWithMoneyAndRelationCurrencyTest extends BaseTestCase
      *
      * @param mixed $price
      */
+    #[DataProvider('moneyCasesProvider')]
     public function testMoneyCasts(array $options, Money $expected): void
     {
         $orderModel = Order::create([
@@ -44,7 +46,7 @@ class ModelWithMoneyAndRelationCurrencyTest extends BaseTestCase
         $this->assertEquals($expected, $orderModel->items()->first()->unit_price);
     }
 
-    public function moneyCasesProvider(): array
+    public static function moneyCasesProvider(): array
     {
         return [
             'from scalar' => [

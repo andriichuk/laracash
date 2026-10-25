@@ -33,7 +33,7 @@ final class Parser
     /**
      * @psalm-param non-empty-string|null $fallbackCurrency
      */
-    public function parseIntlCurrency(string $amount, string $locale = null, string $fallbackCurrency = null): Money
+    public function parseIntlCurrency(string $amount, ?string $locale = null, ?string $fallbackCurrency = null): Money
     {
         /** @psalm-var non-empty-string $currency */
         $locale = $locale ?: (string) $this->config->get('locale');
@@ -44,7 +44,7 @@ final class Parser
     /**
      * @psalm-param non-empty-string|null $fallbackCurrency
      */
-    public function parseIntl(string $amount, string $locale, int $style, string $fallbackCurrency = null): Money
+    public function parseIntl(string $amount, string $locale, int $style, ?string $fallbackCurrency = null): Money
     {
         $currency = is_string($fallbackCurrency) ? new Currency($fallbackCurrency) : null;
 
@@ -61,7 +61,7 @@ final class Parser
     /**
      * @psalm-param non-empty-string|null $fallbackCurrency
      */
-    public function parseIntlLocalizedDecimal(string $amount, string $locale, string $fallbackCurrency = null): Money
+    public function parseIntlLocalizedDecimal(string $amount, string $locale, ?string $fallbackCurrency = null): Money
     {
         return $this->parseIntlLocalized($amount, $locale, NumberFormatter::DECIMAL, $fallbackCurrency);
     }
@@ -69,7 +69,7 @@ final class Parser
     /**
      * @psalm-param non-empty-string|null $fallbackCurrency
      */
-    public function parseIntlLocalized(string $amount, string $locale, int $style, string $fallbackCurrency = null): Money
+    public function parseIntlLocalized(string $amount, string $locale, int $style, ?string $fallbackCurrency = null): Money
     {
         $currency = is_string($fallbackCurrency) ? new Currency($fallbackCurrency) : null;
 
@@ -83,7 +83,7 @@ final class Parser
         return new IntlLocalizedDecimalParser($numberFormatter, $this->isoCurrencies);
     }
 
-    public function parseDecimal(string $amount, string $currency = null): Money
+    public function parseDecimal(string $amount, ?string $currency = null): Money
     {
         /** @psalm-var non-empty-string $currency */
         $currency = $currency ?: (string) $this->config->get('currency');
@@ -95,7 +95,7 @@ final class Parser
     /**
      * @psalm-param non-empty-string|null $fallbackCurrency
      */
-    public function parseBitcoin(string $amount, int $fractionDigits = 2, string $fallbackCurrency = null): Money
+    public function parseBitcoin(string $amount, int $fractionDigits = 2, ?string $fallbackCurrency = null): Money
     {
         $currency = is_string($fallbackCurrency) ? new Currency($fallbackCurrency) : null;
         $parser = new BitcoinMoneyParser($fractionDigits);

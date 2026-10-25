@@ -13,6 +13,7 @@ use Andriichuk\Laracash\Tests\BaseTestCase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Money\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class ModelWithManyMoneyToManyCurrencyColumnTest
@@ -38,6 +39,7 @@ class ModelWithManyMoneyToManyCurrencyColumnTest extends BaseTestCase
     /**
      * @dataProvider moneyCasesProvider
      */
+    #[DataProvider('moneyCasesProvider')]
     public function testMoneyCasts(array $options, array $expected): void
     {
         $model = $this->modelInstance::create([
@@ -54,7 +56,7 @@ class ModelWithManyMoneyToManyCurrencyColumnTest extends BaseTestCase
         $this->assertEquals($expected['book_price'], $model->book_price);
     }
 
-    public function moneyCasesProvider(): array
+    public static function moneyCasesProvider(): array
     {
         return [
             'from scalar' => [
