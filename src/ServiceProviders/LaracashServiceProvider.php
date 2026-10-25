@@ -33,6 +33,7 @@ class LaracashServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->loadTranslationsFrom(dirname(__DIR__) . '/Lang', 'laracash');
         $this->publishes([
             dirname(__DIR__) . '/Config/laracash.php' => config_path('laracash.php'),
         ], 'config');

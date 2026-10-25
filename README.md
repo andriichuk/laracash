@@ -22,6 +22,8 @@
 * [Features](#features)
 * [Requirements](#requirements)
 * [Installation](#installation)
+* [Configurable casts](#configurable-casts)
+* [Validation rules](#validation-rules)
 * Supported concepts
     * [Money columns with default Currency (without a specific column)](#money-columns-with-default-currency)
     * [Currency columns without Money](#currency-columns-without-money)
@@ -104,6 +106,84 @@ Default settings
 Configuration is read from Laravel's configuration repository, including cached
 configuration and runtime `config()` overrides. Defaults are merged during service
 provider registration. Standalone use of `Config` retains file-based defaults.
+
+### Configurable casts
+
+Declare the currency mapping directly in a cast, without implementing
+`HasMoneyWithCurrencyInterface` or adding `HasMoneyWithCurrency`:
+
+```php
+use Andriichuk\Laracash\Casts\CurrencyCast;
+use Andriichuk\Laracash\Casts\MoneyCast;
+
+protected function casts(): array
+{
+    return [
+        'price' => MoneyCast::usingCurrencyColumn('currency'),
+        'currency' => CurrencyCast::class,
+        'book_price' => MoneyCast::usingCurrencyColumn('book_currency'),
+        'book_currency' => CurrencyCast::class,
+        'shipping_price' => MoneyCast::usingCurrency('EUR'),
+    ];
+}
+```
+
+The `$casts` property works on all supported Laravel versions. Its equivalent
+parameter syntax is `MoneyCast::class . ':currency'` for a currency column and
+`MoneyCast::class . ':,EUR'` for a fixed currency. The `casts()` method requires
+Laravel 11 or later.
+
+Scalar cast inputs remain **minor units**: `1099` means `10.99` for USD.
+A currency-column cast persists the currency from an assigned `Money` value.
+A fixed-currency cast rejects a `Money` value with a different currency, avoiding
+silently relabelling the amount. Explicit configuration takes precedence over
+legacy mapping interfaces; existing unparameterized casts keep their behavior.
+
+Add `HasMoney` if you also want the `*_as_decimal` and `*_as_currency` accessors;
+these work with parameterized casts and return `null` for nullable prices.
+
+### Validation rules
+
+Validate **major-unit decimal inputs** before converting them to `Money` values:
+
+```php
+use Andriichuk\Laracash\Rules\CurrencyCode;
+use Andriichuk\Laracash\Rules\MoneyAmount;
+
+public function rules(): array
+{
+    return [
+        'currency' => ['required', new CurrencyCode(['USD', 'EUR'])],
+        'price' => ['required', new MoneyAmount('USD', min: '0.00', max: '10000.00')],
+    ];
+}
+```
+
+Here `price` is explicitly denominated in USD. For a currency selected by the
+request, pass its string value to `MoneyAmount` and validate the currency field
+with `CurrencyCode`. Guard unexpected types before constructing the rule, for
+example `new MoneyAmount(is_string($currency) ? $currency : '')`. The amount rule
+returns a validation failure for unsupported currency codes. Bounds are inclusive decimal amounts in the same currency.
+
+`MoneyAmount` accepts integers and plain decimal strings. It rejects floats,
+exponents, grouping separators, currency symbols, and excess fractional digits
+rather than rounding. USD allows two decimal places, JPY none, KWD three, and XBT
+eight. Use Laravel's `required` or `nullable` rules to control missing/null input.
+
+After validation, convert a decimal input explicitly:
+
+```php
+$product->price = parseMoneyDecimal($validated['price'], 'USD');
+```
+
+Passing `'12.34'` directly to a money cast does not perform this conversion;
+cast inputs are minor units, while this validation rule checks major units.
+
+Both rules recognize ISO currencies and XBT by default. Pass a `Money\Currencies`
+provider as the last constructor argument for custom currencies. Validation
+messages can be overridden through Laravel translations under
+`laracash::validation.money_amount` and `laracash::validation.currency_code`.
+Invalid validation bounds throw `InvalidArgumentException` as configuration errors.
 
 ### Usage Concepts
 
