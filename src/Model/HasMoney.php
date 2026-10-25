@@ -28,7 +28,7 @@ trait HasMoney
             : $this->getCasts();
 
         foreach ($casts as $field => $cast) {
-            if ($cast !== MoneyCast::class || $this->hasAccessor($field)) {
+            if (explode(':', $cast, 2)[0] !== MoneyCast::class || $this->hasAccessor($field . '_as_decimal')) {
                 continue;
             }
 
