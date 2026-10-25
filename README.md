@@ -160,9 +160,10 @@ public function rules(): array
 ```
 
 Here `price` is explicitly denominated in USD. For a currency selected by the
-request, pass that request value to `MoneyAmount` and validate the currency field
-with `CurrencyCode`. The amount rule returns a validation failure for unsupported
-currency codes. Bounds are inclusive decimal amounts in the same currency.
+request, pass its string value to `MoneyAmount` and validate the currency field
+with `CurrencyCode`. Guard unexpected types before constructing the rule, for
+example `new MoneyAmount(is_string($currency) ? $currency : '')`. The amount rule
+returns a validation failure for unsupported currency codes. Bounds are inclusive decimal amounts in the same currency.
 
 `MoneyAmount` accepts integers and plain decimal strings. It rejects floats,
 exponents, grouping separators, currency symbols, and excess fractional digits
