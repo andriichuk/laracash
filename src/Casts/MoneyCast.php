@@ -66,6 +66,9 @@ final class MoneyCast implements CastsAttributes
             /** @psalm-var non-empty-string $currencyColumn */
             $currencyColumn = $model->getCurrencyColumnFor($key);
 
+            // Clear any cached currency cast before Eloquent merges cached values on save.
+            $model->setAttribute($currencyColumn, $money->getCurrency()->getCode());
+
             return [
                 $key => $money->getAmount(),
                 $currencyColumn => $money->getCurrency()->getCode(),
