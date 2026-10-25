@@ -14,6 +14,7 @@ use Andriichuk\Laracash\Tests\BaseTestCase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Money\Money;
+use Money\Currency;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -83,6 +84,22 @@ class ModelWithOneMoneyToOneCurrencyColumnTest extends BaseTestCase
 
         $this->assertEquals(Money::USD(1099), $model->price);
         $this->assertSame('$10.99', $model->price_as_currency);
+    }
+
+    public function testChangingMoneyCurrencyAfterReadingCurrency(): void
+    {
+        $model = $this->modelInstance::create([
+            'name' => 'Product Name',
+            'price' => Money::EUR(1099),
+        ])->fresh();
+
+        $this->assertEquals(Money::EUR(1099), $model->price);
+        $this->assertEquals(new Currency('EUR'), $model->currency);
+        $model->price = Money::USD(2599);
+        $model->save();
+
+        $this->assertEquals(Money::USD(2599), $model->fresh()->price);
+        $this->assertEquals(new Currency('USD'), $model->fresh()->currency);
     }
 
     public function provideModelInstance(): Model
