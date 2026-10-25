@@ -6,6 +6,7 @@ namespace Andriichuk\Laracash;
 
 use Exception;
 use Illuminate\Config\Repository;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
 
 /**
@@ -23,9 +24,11 @@ final class Config
      */
     public function __construct(?RepositoryContract $config = null)
     {
-        if ($config === null && function_exists('app') && app()->bound('config')) {
+        $container = Container::getInstance();
+
+        if ($config === null && $container->bound('config')) {
             /** @var RepositoryContract $config */
-            $config = app('config');
+            $config = $container->make('config');
         }
 
         if ($config !== null) {
@@ -59,7 +62,7 @@ final class Config
 
     private function appConfigFilePath(): string
     {
-        if (function_exists('config_path') && function_exists('app') && method_exists(app(), 'configPath')) {
+        if (function_exists('config_path') && method_exists(Container::getInstance(), 'configPath')) {
             return config_path($this->fileName());
         }
 
